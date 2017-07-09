@@ -11,8 +11,13 @@ class Parameters:
     nameEmitter=[]
     numberEmitter=[]
     numberSimulation=[]
+    pressureData=[]
 
-    def __init__(self, dataSimulation,nameEmitter,numberEmitter,numberSimulation):
+    def setPressure(self,pressureData):
+        self.pressureData=pressureData
+        
+
+    def setDataResFile(self, dataSimulation,nameEmitter,numberEmitter,numberSimulation):
         self.dataSimulation=dataSimulation
         self.nameEmitter=nameEmitter
         self.numberEmitter=numberEmitter
@@ -25,18 +30,15 @@ class Parameters:
         id=self.nameEmitter.index("thermionic output current ")
         self.currentEmitterData = [self.dataSimulation[i][id] for i in range(len(self.dataSimulation))]
 
-
-
-     
-
+    
 
         
         
-    def calculateSensitivity(self,pressureData):
+    def calculateSensitivity(self):
 
         self.sensitivityData=[]
-        for i in range(0, len(pressureData)):    
-            sensitivity=abs(self.currentCollectorData[i]/(self.currentEmitterData[i]*pressureData[i]))
+        for i in range(0, len(self.pressureData)):    
+            sensitivity=abs(self.currentCollectorData[i]/(self.currentEmitterData[i]*self.pressureData[i]))
             self.sensitivityData.append(sensitivity)
 
 

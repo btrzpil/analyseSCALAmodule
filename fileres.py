@@ -6,9 +6,10 @@ class FileRes:
     nameEmitter=[]
     numberSimulation=0
     numberEmitter=0
- 
-    def __init__(self, inFile):
-        self.inFile=inFile
+    fileExtension=".res"
+    
+    def __init__(self, filePath,fileName):
+        self.inFile=filePath+fileName+self.fileExtension
         
 
     def readFile(self):     
@@ -101,11 +102,11 @@ class FileRes:
         self.firstIterationDataSimulation=firstIterationDataSimulation
         self.lastIterationDataSimulation=lastIterationDataSimulation
         
-        numberEmitter=int(len(nameEmitter)/(simulationCounter-1))
+        self.numberEmitter=int(len(nameEmitter)/(simulationCounter-1))
 
         self.numberSimulation=simulationCounter-1
-        self.nameEmitter=nameEmitter[0:numberEmitter]
-        print(self.nameEmitter)
+        self.nameEmitter=nameEmitter[0:self.numberEmitter]
+
         
 
 
