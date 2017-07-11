@@ -104,9 +104,11 @@ tracks.readFile()
 
 
 param=Parameters()
-
-param.setTracksEmitter(tracks.tracksInformation,tracks.startPositionTrack)
+param.setTracksInformation(tracks.tracksInformation,tracks.startPositionTrack)
+param.calculateMeanPathPrimaryParticles()
+xPositionData,yPositionData,zPositionData,currentData=param.calculatePositionIons()
 
 graphs=Graphs()
-#graphs.plot2D()
+print(xPositionData)
+graphs.plot2D(xPositionData,yPositionData,currentData)
 

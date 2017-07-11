@@ -119,9 +119,11 @@ class Graphs:
 
     def plot2D(self, xData,yData,zData):
 
-        (X,Y)=np.meshgrid(x,y)
-        plt.pcolor(X,Y,Z)
-        plt.colorbar(ticks=np.linspace(0,1,5))
+        (X,Y)=np.meshgrid(xData,yData)
+        print(X)
+        Z=zData
+        levels=np.linspace(0,1,11)
+        plt.colorbar(X,Y,X,levels,cmap='YlGnBu')
         plt.show
 
         

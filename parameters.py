@@ -41,15 +41,25 @@ class Parameters:
             self.sensitivityData.append(sensitivity)
 
         
-    def setTracksEmitter(self, tracksInformation,postionTrack):
+    def setTracksInformation(self, tracksInformation,postionTrack):
         
+        self.tracksInformationNSTEP=[tracksInformation[i][1] for i in range(len(tracksInformation))]
         self.tracksInformationEmitters=[tracksInformation[i][2] for i in range(len(tracksInformation))]
+        self.tracksInformationCurrent=[tracksInformation[i][3] for i in range(len(tracksInformation))]
+        self.tracksInformationStepLength=[tracksInformation[i][6] for i in range(len(tracksInformation))]
+    
+
         self.XPositionTracks=[postionTrack[i][1] for i in range(len(postionTrack))]
         self.YPositionTracks=[postionTrack[i][2] for i in range(len(postionTrack))]
         self.ZPositionTracks=[postionTrack[i][3] for i in range(len(postionTrack))]
-        self.currentTracks=[postionTrack[i][7] for i in range(len(postionTrack))]
 
-        
+        self.setTrackInformationEmitter()
+                
+
+
+
+    def setTrackInformationEmitter(self):
+
         counter=0
         emitterInd=[]
         emitterInd.append(0)
@@ -68,26 +78,32 @@ class Parameters:
 
         emitterInd.append(counter)
         self.emitterInd=emitterInd
+        print(emitterInd)
 
 
-    def setTrackInformationEmitter(self,emitter):
+    def calculateMeanPathPrimaryParticles(self):
+        sumLenPathPrimaryParticles=0
+        nParticle=self.emitterInd[1]
+        for step in range (self.emitterInd[0],self.emitterInd[1]):
+            lenPathParticle=self.tracksInformationNSTEP[step]*self.tracksInformationStepLength[step]
+            sumLenPathPrimaryParticles=sumLenPathPrimaryParticles+lenPathParticle
+               
+        meanPathPrimaryParticles=sumLenPathPrimaryParticles/nParticle
 
-        xPositionData=self.XPositionTracks[self.emitterInd[i]:self.emitterInd[i+1]]
-        yPositionData=self.YPositionTracks[self.emitterInd[i]:self.emitterInd[i+1]]
-        zPositionData=self.ZPositionTracks[self.emitterInd[i]:self.emitterInd[i+1]]
-        self.currentTracks[self.emitterInd[i]:self.emitterInd[i+1]]
+    def calculatePositionIons(self):
+        xPositionData=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+        yPositionData=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+        zPositionData=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+        currentData=self.tracksInformationCurrent[self.emitterInd[1]:self.emitterInd[2]]
+        return (xPositionData,yPositionData,zPositionData,currentData)
+
+
+
 
 
 
       ##def calculateIonCollectionEfficency(self):
-##        
-##
-##        print(len(tracksInformationEmitter[emitterInd[0]:emitterInd[1]]))
-##
-##        print(len(tracksInformationEmitter[emitterInd[1]:emitterInd[2]]))
-##
-##        for i in range(0,len(emitterInd)-1):
-##            print(len(tracksInformationEmitter[emitterInd[i]:emitterInd[i+1]]))
+
 
         
     
