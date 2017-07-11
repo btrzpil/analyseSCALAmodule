@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
 
+import numpy as np
+from matplotlib import cm
+from numpy.random import randn
+
 class Graphs:
     pressureData=[]
     voltageData=[]
@@ -73,6 +77,8 @@ class Graphs:
         
     def plotSenistivityVsCurrent(self,sensitivityData,currentData):
         self.setCurrentData(currentData)
+        xData=[]
+        yData=[]
         
         xlabelText='Current [A]'
         ylabelText='Sensitivity $[mbar^{-1}]$'
@@ -81,16 +87,15 @@ class Graphs:
 
 
         numberFile=len(sensitivityData)
-        print(numberFile)
+
         for counterFile in range(numberFile):
             yData=[sensitivityData[counterFile][i] for i in range(len(sensitivityData[counterFile]))]
-            print(yData)
-
             xData=[currentData[counterFile][i] for i in range(len(currentData[counterFile]))]
-            print(xData)
-            self.plotLine(xData,yData,ax,self.lineType[counterFile],self.labelName[counterFile])
-            print(counterFile)
-        self.setLegend(fig, ax)
+
+            ax.plot(xData, yData,'r-*',label='')
+
+
+        #self.setLegend(fig, ax)
         self.saveFigure(fig)
         
     def plotSensitivityVsPressure(self,sensitivityData,pressureData):
@@ -111,6 +116,17 @@ class Graphs:
         ax.set_xscale('log')
         self.setLegend(fig, ax)
         self.saveFigure(fig)
+
+    def plot2D(self, xData,yData,zData):
+
+        (X,Y)=np.meshgrid(x,y)
+        plt.pcolor(X,Y,Z)
+        plt.colorbar(ticks=np.linspace(0,1,5))
+        plt.show
+
+        
+
+
 
         
 

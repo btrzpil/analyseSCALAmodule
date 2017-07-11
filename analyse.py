@@ -60,34 +60,34 @@ from filetracks import FileTracks
 ##graphs.plotSensitivityVsVoltage(sensitivityData,voltageData)
 
 
-####analyse file - current
-filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\res file\\research - current\\new"
-fileName="\\helmer_database"
-numberFile=6
-pressureData=[1e-10 for i in range(10)]
-sensitivityData=[]
-currentData=[]
-for i in range(1,numberFile):
-
-    res = FileRes(filePath,fileName+str(i))
-    res.readFile()
-    param=Parameters()
-    param.setDataResFile(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
-    param.setPressure(pressureData)
-    param.calculateSensitivity()
-    sensitivityData.append(param.sensitivityData)
-    currentData.append(param.currentEmitterData)
-
-
-graphTitle="\\current"
-graphPath="E:\\btrzpil\\Result\\Graph\\Helmer"
-labelLegend=["l","a","b","e","l","l","o","n","g"]
-
-graphs=Graphs()
-graphs.setGraphLabel(labelLegend)
-graphs.setGraphTitle(graphTitle)
-graphs.setGraphPath(graphPath)
-graphs.plotSenistivityVsCurrent(sensitivityData,currentData)
+######analyse file - current
+##filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\res file\\research - current\\new"
+##fileName="\\helmer_database"
+##numberFile=6
+##pressureData=[1e-10 for i in range(10)]
+##sensitivityData=[]
+##currentData=[]
+##for i in range(1,numberFile):
+##
+##    res = FileRes(filePath,fileName+str(i))
+##    res.readFile()
+##    param=Parameters()
+##    param.setDataResFile(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
+##    param.setPressure(pressureData)
+##    param.calculateSensitivity()
+##    sensitivityData.append(param.sensitivityData)
+##    currentData.append(param.currentEmitterData)
+##
+##
+##graphTitle="\\current"
+##graphPath="E:\\btrzpil\\Result\\Graph\\Helmer"
+##labelLegend=["l","a","b","e","l","l","o","n","g"]
+##
+##graphs=Graphs()
+##graphs.setGraphLabel(labelLegend)
+##graphs.setGraphTitle(graphTitle)
+##graphs.setGraphPath(graphPath)
+##graphs.plotSenistivityVsCurrent(sensitivityData,currentData)
 
 
 
@@ -98,7 +98,15 @@ fileName="\\helmer"
 
 
 
-##tracks = FileTracks(filePath,fileName)
-##
-##tracks.readFile()
-##tracks.debugTracks(3)
+tracks = FileTracks(filePath,fileName)
+
+tracks.readFile()
+
+
+param=Parameters()
+
+param.setTracksEmitter(tracks.tracksInformation,tracks.startPositionTrack)
+
+graphs=Graphs()
+#graphs.plot2D()
+

@@ -16,6 +16,7 @@ class FileTracks:
         inFile=self.filePath+self.fileName+self.fileExtensionTracks
         outFile=self.filePath+self.fileName+self.fileExtensionTxt
         #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
+        #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
     def readFile(self):
         inFile=self.filePath+self.fileName+self.fileExtensionTxt
         trackCounter=0
@@ -54,7 +55,10 @@ class FileTracks:
                         file.readline()
                         file.readline()
 
-                        file.readline()#header
+                        if (trackCounter==1):
+                            self.header = file.readline()#header
+                        else:
+                            file.readline()
 
 
                         
@@ -68,6 +72,7 @@ class FileTracks:
 
                             else:
                                 file.readline()
+                                
                         trackInformation.append(trackCounter)
                         trackInformation.append(NSTEP)
                         trackInformation.append(emitterNumber)
@@ -86,6 +91,7 @@ class FileTracks:
         print(self.tracksInformation[numberTrack])
         print(self.startPositionTrack[numberTrack])
         print(self.endPositionTrack[numberTrack])
+        print(self.header)
 
               
                         
