@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 
 import numpy as np
-from matplotlib import cm
-from numpy.random import randn
+import scipy as scipy
+
+from scipy import interpolate
+
+
 
 class Graphs:
     pressureData=[]
@@ -117,16 +120,31 @@ class Graphs:
         self.setLegend(fig, ax)
         self.saveFigure(fig)
 
-    def plot2D(self, xData,yData,zData):
+##    def ionCreationMaps(self, xData,yData,zData):
+##
+##    def ionDestinationMaps(self, xData,yData,zData):
 
-        (X,Y)=np.meshgrid(xData,yData)
-        print(X)
-        Z=zData
-        levels=np.linspace(0,1,11)
-        plt.colorbar(X,Y,X,levels,cmap='YlGnBu')
-        plt.show
+    def plot2D(self, x,y,z):
 
-        
+
+
+        # Set up a regular grid of interpolation points
+        print(len(x))
+        x_min=float(min(x))
+        x_max=float(max(x))
+        y_min=float(min(y))
+        y_max=float(max(y))
+
+        xi, yi = np.linspace(x_min, x_max, 500), np.linspace(y_min, y_max, 500)
+        xi, yi = np.meshgrid(xi, yi)
+
+        # Interpolate; there's also method='cubic' for 2-D data such as here
+        zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='linear')
+
+        plt.imshow(zi, vmin=float(min(z)), vmax=float(max(z)), origin='lower',
+           extent=[x_min, x_max, y_min, y_max])
+        plt.colorbar()
+        plt.show()
 
 
 

@@ -54,7 +54,7 @@ class Parameters:
         self.ZPositionTracks=[postionTrack[i][3] for i in range(len(postionTrack))]
 
         self.setTrackInformationEmitter()
-                
+        self.calculatePositionIons()        
 
 
 
@@ -91,11 +91,12 @@ class Parameters:
         meanPathPrimaryParticles=sumLenPathPrimaryParticles/nParticle
 
     def calculatePositionIons(self):
-        xPositionData=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-        yPositionData=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-        zPositionData=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-        currentData=self.tracksInformationCurrent[self.emitterInd[1]:self.emitterInd[2]]
-        return (xPositionData,yPositionData,zPositionData,currentData)
+        self.xPositionIons=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+        self.yPositionIons=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+        self.zPositionIons=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+        self.currentIons=self.tracksInformationCurrent[self.emitterInd[1]:self.emitterInd[2]]
+        print(min(self.xPositionIons))
+        print(self.xPositionIons[0])
 
 
 
