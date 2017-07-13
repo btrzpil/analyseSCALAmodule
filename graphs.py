@@ -139,12 +139,21 @@ class Graphs:
         xi, yi = np.meshgrid(xi, yi)
 
         # Interpolate; there's also method='cubic' for 2-D data such as here
-        zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='linear')
+        zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='cubic')
 
         plt.imshow(zi, vmin=float(min(z)), vmax=float(max(z)), origin='lower',
            extent=[x_min, x_max, y_min, y_max])
         plt.colorbar()
         plt.show()
+
+
+    def grid(x, y, z, resX=100, resY=100):
+        "Convert 3 column data to matplotlib grid"
+        xi = linspace(min(x), max(x), resX)
+        yi = linspace(min(y), max(y), resY)
+        Z = griddata(x, y, z, xi, yi)
+        X, Y = meshgrid(xi, yi)
+        return X, Y, Z        
 
 
 

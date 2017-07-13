@@ -1,6 +1,9 @@
+import os
+import win32com.shell.shell as shell
 class FileTracks:
     
     fileExtensionTxt=".txt"
+    fileExtensionDat=".txt"
     fileExtensionTracks=".tracks"
     recognitionText = ["                   Writing track number:"]
 
@@ -8,13 +11,29 @@ class FileTracks:
     startPositionTrack=[]
     endPositionTrack=[]
     
-    def __init__(self, filePath,fileName):
+
+
+
+
+    def setFilePath(self, filePath):
         self.filePath=filePath
+        
+    def setFileName(self, fileName):
         self.fileName=fileName
         
+    def setReadtrackPath(self, programPath):
+        self.programPath=programPath
+        
     def parseFile(self):
+        programName="\\readtrac.exe "
+        
         inFile=self.filePath+self.fileName+self.fileExtensionTracks
-        outFile=self.filePath+self.fileName+self.fileExtensionTxt
+        outFile=self.filePath+self.fileName+self.fileExtensionDat
+        command='\"\"'+self.programPath+programName+'\"\"'
+
+
+        commands = 'echo hi'
+        shell.ShellExecuteEx(lpVerb='runas', lpFile='cmd.exe', lpParameters='/c '+commands)
         #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
         #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
     def readFile(self):

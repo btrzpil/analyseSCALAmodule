@@ -92,22 +92,26 @@ from filetracks import FileTracks
 
 
 
+##
+##filePath="E:\\btrzpil"
+##fileName="\\helmer"
+filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\research\\research - pressure\\result"
+fileName="\\helmer_database0_1"
+programPath="C:\\Program Files\\Vector Fields\\Opera 18R2 x64\\code\\bin"
 
-filePath="E:\\btrzpil"
-fileName="\\helmer"
-
-
-
-tracks = FileTracks(filePath,fileName)
-
-tracks.readFile()
-
-
-param=Parameters()
-param.setTracksInformation(tracks.tracksInformation,tracks.startPositionTrack)
-param.calculateMeanPathPrimaryParticles()
-
-graphs=Graphs()
-
-graphs.plot2D(param.xPositionIons,param.yPositionIons,param.currentIons)
+tracks = FileTracks()
+tracks.setFilePath(filePath)
+tracks.setFileName(fileName)
+tracks.setReadtrackPath(programPath)
+tracks.parseFile()
+##tracks.readFile()
+##
+##
+##param=Parameters()
+##param.setTracksInformation(tracks.tracksInformation,tracks.startPositionTrack)
+##param.calculateMeanPathPrimaryParticles()
+##
+##graphs=Graphs()
+##
+##graphs.plot2D(param.xPositionIons,param.zPositionIons,param.currentIons)
 
