@@ -1,5 +1,5 @@
 import os
-import win32com.shell.shell as shell
+import subprocess
 class FileTracks:
     
     fileExtensionTxt=".txt"
@@ -21,21 +21,27 @@ class FileTracks:
     def setFileName(self, fileName):
         self.fileName=fileName
         
-    def setReadtrackPath(self, programPath):
-        self.programPath=programPath
         
     def parseFile(self):
-        programName="\\readtrac.exe "
+        programName="readtrac.exe "
         
         inFile=self.filePath+self.fileName+self.fileExtensionTracks
         outFile=self.filePath+self.fileName+self.fileExtensionDat
-        command='\"\"'+self.programPath+programName+'\"\"'
+        command=programName+inFile+" B "+outFile
+        print(command)
+        subprocess.Popen("readtrac.exe E:\\btrzpil\\helmer_database0_1.tracks B E:\\btrzpil\\h_1.txt")
+
+        
 
 
-        commands = 'echo hi'
-        shell.ShellExecuteEx(lpVerb='runas', lpFile='cmd.exe', lpParameters='/c '+commands)
+
         #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
-        #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
+
+
+    def run_win_cmd(self,cmd):
+        out = subprocess.check_output("dir c:\ /AD", shell = True)
+
+    
     def readFile(self):
         inFile=self.filePath+self.fileName+self.fileExtensionTxt
         trackCounter=0

@@ -95,14 +95,14 @@ from filetracks import FileTracks
 ##
 ##filePath="E:\\btrzpil"
 ##fileName="\\helmer"
-filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\research\\research - pressure\\result"
+filePath="E:\\btrzpil"
 fileName="\\helmer_database0_1"
-programPath="C:\\Program Files\\Vector Fields\\Opera 18R2 x64\\code\\bin"
+
 
 tracks = FileTracks()
 tracks.setFilePath(filePath)
 tracks.setFileName(fileName)
-tracks.setReadtrackPath(programPath)
+
 tracks.parseFile()
 ##tracks.readFile()
 ##
