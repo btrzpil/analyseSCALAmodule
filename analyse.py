@@ -95,21 +95,19 @@ from filetracks import FileTracks
 ##
 ##filePath="E:\\btrzpil"
 ##fileName="\\helmer"
-filePath="E:\\btrzpil"
+filePath="E:\\btrzpil\\ab"
 fileName="\\helmer_database0_1"
 
 
-tracks = FileTracks()
-tracks.setFilePath(filePath)
-tracks.setFileName(fileName)
+tracks = FileTracks(filePath,fileName)
+
 
 tracks.parseFile()
-##tracks.readFile()
-##
-##
-##param=Parameters()
-##param.setTracksInformation(tracks.tracksInformation,tracks.startPositionTrack)
-##param.calculateMeanPathPrimaryParticles()
+tracks.readFile()
+
+param=Parameters()
+param.setTracksInformation(tracks.tracksInformation,tracks.startPositionTrack)
+param.calculateMeanPathPrimaryParticles()
 ##
 ##graphs=Graphs()
 ##

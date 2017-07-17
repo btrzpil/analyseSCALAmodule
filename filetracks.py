@@ -1,51 +1,48 @@
-import os
-import subprocess
+import os as os
+import subprocess as subprocess
+
 class FileTracks:
     
     fileExtensionTxt=".txt"
-    fileExtensionDat=".txt"
     fileExtensionTracks=".tracks"
     recognitionText = ["                   Writing track number:"]
-
+    programName="readtrac.exe "
+    programArgument=" B "
     tracksInformation=[]
     startPositionTrack=[]
     endPositionTrack=[]
     
+    def __init__(self,filePath,fileName):
+        self.setFilePath(filePath)
+        self.setFileName(fileName)
+        self.setFile()
 
 
-
-
-    def setFilePath(self, filePath):
+    def setFilePath(self,filePath):
         self.filePath=filePath
-        
-    def setFileName(self, fileName):
+
+    def setFileName(self,fileName):
         self.fileName=fileName
+
+    def setFile(self):
+        self.fileTracks=self.filePath+self.fileName+self.fileExtensionTracks
+        self.fileTxt=self.filePath+self.fileName+self.fileExtensionTxt
         
         
     def parseFile(self):
-        programName="readtrac.exe "
+
+
+		#subprocess.Popen("readtrac.exe E:\\btrzpil\\helmer_database0_1.tracks B E:\\btrzpil\\helmer_database0_1.txt")
+
+        commandExecuteProgram = self.programName + self.fileTracks + self.programArgument + self.fileTxt
+        subprocess.Popen(commandExecuteProgram)
         
-        inFile=self.filePath+self.fileName+self.fileExtensionTracks
-        outFile=self.filePath+self.fileName+self.fileExtensionDat
-        command=programName+inFile+" B "+outFile
-        print(command)
-        subprocess.Popen("readtrac.exe E:\\btrzpil\\helmer_database0_1.tracks B E:\\btrzpil\\h_1.txt")
-
-        
-
-
-
-        #.\readtrac.exe E:\btrzpil\helmer.tracks B E:\btrzpil\h.txt
-
-
-    def run_win_cmd(self,cmd):
-        out = subprocess.check_output("dir c:\ /AD", shell = True)
 
     
     def readFile(self):
-        inFile=self.filePath+self.fileName+self.fileExtensionTxt
-        trackCounter=0
 
+        trackCounter=0
+        inFile=self.fileTxt
         with open(inFile, "r") as file:
             
             while True:

@@ -89,26 +89,14 @@ class Parameters:
             sumLenPathPrimaryParticles=sumLenPathPrimaryParticles+lenPathParticle
                
         meanPathPrimaryParticles=sumLenPathPrimaryParticles/nParticle
+        return meanPathPrimaryParticles
 
     def calculatePositionIons(self):
         self.xPositionIons=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
         self.yPositionIons=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
         self.zPositionIons=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
         self.currentIons=self.tracksInformationCurrent[self.emitterInd[1]:self.emitterInd[2]]
-        print(min(self.xPositionIons))
-        print(self.xPositionIons[0])
 
 
-
-
-
-
-      ##def calculateIonCollectionEfficency(self):
-
-
-        
-    
-      
-
-
-    
+    def calculateIonCollectionEfficency(self):
+        print(self.calculateMeanPathPrimaryParticles)
