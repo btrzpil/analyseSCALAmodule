@@ -4,7 +4,8 @@ from fileres import FileRes
 from parameters import Parameters
 from graphs import Graphs
 from filetracks import FileTracks
-
+from parameterstrackparticle import ParametersTrackParticles
+import time
 ######analyse file - pressure 
 ##filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\res file\\research - pressure"
 ##fileName="\\helmer_database"
@@ -95,19 +96,21 @@ from filetracks import FileTracks
 ##
 ##filePath="E:\\btrzpil"
 ##fileName="\\helmer"
-filePath="E:\\btrzpil\\ab"
-fileName="\\helmer_database0_1"
+filePath="E:\\btrzpil\\OperaSimulations\\shg\\sim\\pressure-h\\result"
+fileName="\\helmer_database0_2"
 
 
 tracks = FileTracks(filePath,fileName)
 
 
 tracks.parseFile()
+time.sleep(5)
 tracks.readFile()
 
-param=Parameters()
+param=ParametersTrackParticles()
 param.setTracksInformation(tracks.tracksInformation,tracks.startPositionTrack)
 param.calculateMeanPathPrimaryParticles()
+param.calculateIonCollectionEfficency()
 ##
 ##graphs=Graphs()
 ##
