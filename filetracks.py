@@ -115,27 +115,5 @@ class FileTracks:
         print(self.endPositionTrack[numberTrack])
         print(self.header)
 
-              
-                        
-                       
-
-##        with open(inFile, "r") as file:        
-##            lineCounter = 0
-##
-##            #for i, line in enumerate(file):
-##            #for line in file:
-##            file.seek(lineCounter, 0)   
-##            line=file.readline()
-##            print(line)
-##            if line.startswith(self.recognitionText[0]):
-##                lineCounter=lineCounter+1
-##                file.seek(lineCounter, 0) 
-##                line=file.readline()
-##                print(line)
-
-
-
-                    
-
 
 
