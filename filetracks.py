@@ -90,7 +90,6 @@ class FileTracks:
                         for step in range(NSTEP):
                             position.append(file.readline().split()[1:4])
                         if charge==-1:
-                            print("true")
                         else:
                             sumIon=sumIon+1
                             for step in position:
