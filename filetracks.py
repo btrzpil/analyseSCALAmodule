@@ -8,11 +8,12 @@ class FileTracks:
     recognitionText = ["                   Writing track number:"]
     programName="readtrac.exe "
     programArgument=" B "
-    tracksInformation=[]
-    startPositionTrack=[]
-    endPositionTrack=[]
-    
+
+  
     def __init__(self,filePath,fileName):
+        self.tracksInformation=[]
+        self.startPositionTrack=[]
+        self.endPositionTrack=[]
         self.setFilePath(filePath)
         self.setFileName(fileName)
         self.setFile()
@@ -40,7 +41,8 @@ class FileTracks:
 
     
     def readFile(self):
-
+        sumIon=0
+        sumIonCollected=0
         trackCounter=0
         inFile=self.fileTxt
         with open(inFile, "r") as file:
@@ -83,18 +85,19 @@ class FileTracks:
                             file.readline()
 
 
-                        
+                        position=[]
+
                         for step in range(NSTEP):
-                            if step == 0:
-                                startPosition=file.readline().split()
+                            position.append(file.readline().split()[1:4])
+                        if charge==-1:
+                            print("true")
+                        else:
+                            sumIon=sumIon+1
+                            for step in position:
+                                if (-1<=float(step[0])<=2.4)and(-2.75<=float(step[1])<=2.5)and(-1.55<=float(step[2])<=1):
+                                    sumIonCollected=sumIonCollected+1
+                                    break
 
-
-                            elif step == NSTEP-1:
-                                endPosition=file.readline().split()
-
-                            else:
-                                file.readline()
-                                
                         trackInformation.append(trackCounter)
                         trackInformation.append(NSTEP)
                         trackInformation.append(emitterNumber)
@@ -103,10 +106,16 @@ class FileTracks:
                         trackInformation.append(charge)
                         trackInformation.append(stepLength)
                         self.tracksInformation.append(trackInformation)
-                        
+
+
+                        startPosition=[position[0][i] for i in range(3)]
+                        endPosition=[position[NSTEP-1][i] for i in range(3)]
 
                         self.startPositionTrack.append(startPosition)
                         self.endPositionTrack.append(endPosition)
+        print(sumIonCollected)
+        print(sumIon)
+
                         
 
     def debugTracks(self,numberTrack):

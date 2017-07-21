@@ -60,6 +60,27 @@ class Graphs:
         ax.plot(xData, yData,line,label=textLabel)
         return min(xData),max(xData),min(yData),max(yData)
 
+    def plotMeanPathPrimaryParticles(self,xData,meanPathPrimaryParticles,xlabelText):
+
+        ylabelText='Mean Path Primary Particles'
+        fig, ax = self.setFigure(xlabelText,ylabelText)
+        self.plotLine(xData,meanPathPrimaryParticles,ax,self.lineType[0],xlabelText)
+        if xlabelText=='Pressure [mbar]':
+            ax.set_xscale('log')
+        self.saveFigure(fig)
+
+
+    def plotIonCollectionEfficency(self,xData,ionCollectionEfficency,xlabelText):
+
+        ylabelText='Ion Collection Efficency'
+        fig, ax = self.setFigure(xlabelText,ylabelText)
+        self.plotLine(xData,ionCollectionEfficency,ax,self.lineType[0],xlabelText)
+        if xlabelText=='Pressure [mbar]':
+            ax.set_xscale('log')
+
+        self.saveFigure(fig)
+
+
     def plotSensitivityVsVoltage(self,sensitivityData,voltageData):
         self.setVoltageData(voltageData)
         

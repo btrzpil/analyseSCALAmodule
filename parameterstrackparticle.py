@@ -28,22 +28,26 @@ class ShapeArea:
 class ParametersTrackParticles:
 
 	def __init__(self, tracksInformation,postionTrack):
+		self.emitterInd=[]
 		self.tracksInformationNSTEP=[tracksInformation[i][1] for i in range(len(tracksInformation))]
 		self.tracksInformationEmitters=[tracksInformation[i][2] for i in range(len(tracksInformation))]
 		self.tracksInformationCurrent=[tracksInformation[i][3] for i in range(len(tracksInformation))]
 		self.tracksInformationStepLength=[tracksInformation[i][6] for i in range(len(tracksInformation))]
-		self.XPositionTracks=[postionTrack[i][1] for i in range(len(postionTrack))]
-		self.YPositionTracks=[postionTrack[i][2] for i in range(len(postionTrack))]
-		self.ZPositionTracks=[postionTrack[i][3] for i in range(len(postionTrack))]
+		self.XPositionTracks=[postionTrack[i][0] for i in range(len(postionTrack))]
+		self.YPositionTracks=[postionTrack[i][1] for i in range(len(postionTrack))]
+		self.ZPositionTracks=[postionTrack[i][2] for i in range(len(postionTrack))]
 		self.setTrackInformationEmitter()
 		self.calculatePositionIons()
 
-	def setTrackInformationEmitter(self):
 
+	def setTrackInformationEmitter(self):
+		self.emitterInd=[]
 		counter=0
 		emitterInd=[]
+
 		emitterInd.append(0)
 		emitterTmp=self.tracksInformationEmitters[0]
+
 
 		for emitter in self.tracksInformationEmitters:
             
@@ -54,10 +58,17 @@ class ParametersTrackParticles:
 
 
 			counter=counter+1 
-              
 
 		emitterInd.append(counter)
 		self.emitterInd=emitterInd
+
+
+	def calculatePositionIons(self):
+		self.xPositionIons=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+		self.yPositionIons=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+		self.zPositionIons=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
+		self.currentIons=self.tracksInformationCurrent[self.emitterInd[1]:self.emitterInd[2]]
+
 
 
 
@@ -72,11 +83,7 @@ class ParametersTrackParticles:
 		self.meanPathPrimaryParticles=sumLenPathPrimaryParticles/nParticle
 		print(self.meanPathPrimaryParticles)
 
-	def calculatePositionIons(self):
-		self.xPositionIons=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-		self.yPositionIons=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-		self.zPositionIons=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-		self.currentIons=self.tracksInformationCurrent[self.emitterInd[1]:self.emitterInd[2]]
+
 
 
 	def calculateIonCollectionEfficency(self,x1,y1,z1,x2,y2,z2):

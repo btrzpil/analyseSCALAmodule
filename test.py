@@ -1,4 +1,7 @@
-
+##
+##graphs=Graphs()
+##
+##graphs.plot2D(param.xPositionIons,param.zPositionIons,param.currentIons)
 import subprocess
 
 
