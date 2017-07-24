@@ -1,38 +1,22 @@
 import matplotlib.pyplot as plt
-
 import numpy as np
 import scipy as scipy
-
 from scipy import interpolate
 
 
 
 class Graphs:
-    pressureData=[]
-    voltageData=[]
-    currentData=[]
 
 
-    lineType=[]
-    labelName=[]
 
+    def __init__(self,graphTitle,graphPath):
+        self.lineType=['r-*', 'b-*', 'k-*', 'g-*','y-*']
+        self.graphTitle=graphTitle
+        self.graphTitle=graphTitle
 
-    def __init__(self):
-        self.lineType=['r-*', 'b-*', 'k-*', 'g-*','k-*']
-
-    def setGraphLabel(self,labelName):
-        self.labelName=labelName
-        
-    def setPressureData(self,pressureData):
-        self.pressureData=pressureData
-        
-    def setVoltageData(self,voltageData):
-        self.voltageData=voltageData
-        
-    def setCurrentData(self,currentData):
-        self.currentData=currentData
-
-
+    def setLabelLine(self,labelLine):
+        self.labelLine=labelLine
+ 
     def setFigure(self,xlabelText,ylabelText):
         fig, ax = plt.subplots( nrows=1, ncols=1)
         plt.grid(True)
@@ -44,27 +28,21 @@ class Graphs:
         #plt.axis([0,maxPressureData, 0, maxSensitivityData+5])
         legend = ax.legend(loc='upper left')
         frame = legend.get_frame()
-        frame.set_facecolor('1')
-        
-    def setGraphTitle(self,graphTitle):
-        self.graphTitle=graphTitle
-
-    def setGraphPath(self,graphPath):
-        self.graphPath=graphPath
+        frame.set_facecolor('1')      
         
     def saveFigure(self,fig):
-
         fig.savefig(self.graphPath+self.graphTitle+".png")# save the figure to file        
 
-    def plotLine(self,xData,yData,ax,line,textLabel):
-        ax.plot(xData, yData,line,label=textLabel)
+    def plotLine(self,xData,yData,ax,line,labelLine):
+        ax.plot(xData, yData,line,label=labelLine)
         return min(xData),max(xData),min(yData),max(yData)
 
     def plotMeanPathPrimaryParticles(self,xData,meanPathPrimaryParticles,xlabelText):
 
         ylabelText='Mean Path Primary Particles'
         fig, ax = self.setFigure(xlabelText,ylabelText)
-        self.plotLine(xData,meanPathPrimaryParticles,ax,self.lineType[0],xlabelText)
+        labelLine=xlabelText
+        self.plotLine(xData,meanPathPrimaryParticles,ax,self.lineType[0],labelLine)
         if xlabelText=='Pressure [mbar]':
             ax.set_xscale('log')
         self.saveFigure(fig)
@@ -74,72 +52,32 @@ class Graphs:
 
         ylabelText='Ion Collection Efficency'
         fig, ax = self.setFigure(xlabelText,ylabelText)
-        self.plotLine(xData,ionCollectionEfficency,ax,self.lineType[0],xlabelText)
+        labelLine=xlabelText
+        self.plotLine(xData,ionCollectionEfficency,ax,self.lineType[0],labelLine)
         if xlabelText=='Pressure [mbar]':
             ax.set_xscale('log')
 
         self.saveFigure(fig)
 
-
-    def plotSensitivityVsVoltage(self,sensitivityData,voltageData):
-        self.setVoltageData(voltageData)
-        
-        xlabelText='Voltage [V]'
+    def plotSensitivity(self,sensitivityData,xData,xlabelText,labelLine):
+        self.setLabelLine(labelLine)
         ylabelText='Sensitivity $[mbar^{-1}]$'
-        
         fig, ax = self.setFigure(xlabelText,ylabelText)
-        
+
         numberFile=len(sensitivityData)
 
         for counterFile in range(numberFile):
             yData=[sensitivityData[counterFile][i] for i in range(len(sensitivityData[counterFile]))]
-            self.plotLine(self.voltageData,yData,ax,self.lineType[counterFile],self.labelName[counterFile])
+            self.plotLine(xData,yData,ax,self.lineType[counterFile],self.labelLine[counterFile]) 
+        
+        if xlabelText=='Pressure [mbar]':
+            ax.set_xscale('log')
 
         self.setLegend(fig, ax)
         self.saveFigure(fig)
 
-        
-    def plotSenistivityVsCurrent(self,sensitivityData,currentData):
-        self.setCurrentData(currentData)
-        xData=[]
-        yData=[]
-        
-        xlabelText='Current [A]'
-        ylabelText='Sensitivity $[mbar^{-1}]$'
-        
-        fig, ax = self.setFigure(xlabelText,ylabelText)
 
-
-        numberFile=len(sensitivityData)
-
-        for counterFile in range(numberFile):
-            yData=[sensitivityData[counterFile][i] for i in range(len(sensitivityData[counterFile]))]
-            xData=[currentData[counterFile][i] for i in range(len(currentData[counterFile]))]
-
-            ax.plot(xData, yData,'r-*',label='')
-
-
-        #self.setLegend(fig, ax)
-        self.saveFigure(fig)
-        
-    def plotSensitivityVsPressure(self,sensitivityData,pressureData):
-
-        self.setPressureData(pressureData)
-        
-        xlabelText='Pressure [mbar]'
-        ylabelText='Sensitivity $[mbar^{-1}]$'
-        
-        fig, ax = self.setFigure(xlabelText,ylabelText)
-
-        numberFile=len(sensitivityData)
-
-        for counterFile in range(numberFile):
-            yData=[sensitivityData[counterFile][i] for i in range(len(sensitivityData[counterFile]))]
-            self.plotLine(self.pressureData,yData,ax,self.lineType[counterFile],self.labelName[counterFile])
-
-        ax.set_xscale('log')
-        self.setLegend(fig, ax)
-        self.saveFigure(fig)
+    
 
 ##    def ionCreationMaps(self, xData,yData,zData):
 ##
