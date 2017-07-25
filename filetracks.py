@@ -5,8 +5,7 @@ class Trajectories:
     def __init__(self):
         self.TrajectoriesCoordinates=[]
         self.TrajectoriesParameters=[]
-        self.TrajectoriesStartPosition=[]
-        self.TrajectoriesEndPosition=[]
+
 
 class Position:
     def __init__(self):
@@ -86,13 +85,8 @@ class FileTracks:
             tabFloat = [float(s) for s in tabStr]
             pos.position.append(tabFloat)
 
-                
-        startPosition=[pos.position[0][i] for i in range(3)]
-        endPosition=[pos.position[NSTEP-1][i] for i in range(3)]
-
         self.trajectories.TrajectoriesCoordinates.append(pos.position)
-        self.trajectories.TrajectoriesStartPosition.append(startPosition)
-        self.trajectories.TrajectoriesEndPosition.append(endPosition)       
+      
 
     def addTrajectoriesParameters(self,ITRAK,RTRACK):
         trackInformation=[]
@@ -119,11 +113,7 @@ class FileTracks:
         for i in range(numberLines):
             self.file.readline()
 
-    # def debugTracks(self,numberTrack):
-    #     print(self.tracksInformation[numberTrack])
-    #     print(self.startPositionTrack[numberTrack])
-    #     print(self.endPositionTrack[numberTrack])
-    #     print(self.header)
+
 
 
 

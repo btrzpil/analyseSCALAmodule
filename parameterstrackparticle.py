@@ -1,9 +1,52 @@
 from filetracks import FileTracks
 from filetracks import Trajectories
 from filetracks import Position
-class ShapeArea:
 
-	def __init__(self, x1,y1,z1,x2,y2,z2):
+
+class Shape:
+	def __init__(self,x1,y1,z1,x2,y2,z2):	
+		if x1>x2:
+			self.xmin=x2
+			self.xmax=x1
+		else:
+			self.xmin=x1
+			self.xmax=x2
+
+		if y1>y2:
+			self.ymin=y2
+			self.ymax=y1
+		else:
+			self.ymin=y1
+			self.ymax=y2
+
+		if z1>z2:
+			self.zmin=z2
+			self.zmax=z1
+		else:
+			self.zmin=z1
+			self.zmax=z2
+
+
+class SolidShape:
+	def __init__(self):
+		self.shape="SolidShape"
+
+class Cylinder(SolidShape):
+	def __init__(self,x,y,z1,z2,r):
+		self.x=x
+		self.y=y
+		self.r=r
+		if z1>z2:
+			self.zmin=z2
+			self.zmax=z1
+		else:
+			self.zmin=z1
+			self.zmax=z2		
+
+
+
+class Cuboid(SolidShape):
+	def __init__(x1,y1,z1,x2,y2,z2):	
 		if x1>x2:
 			self.xmin=x2
 			self.xmax=x1
@@ -62,7 +105,6 @@ class ParametersTrackParticles:
 
 	def getTrajectoriesCoordinatesDestinationIons(self):
 		TrajectoriesCoordinatesIon=self.getTrajectoriesCoordinatesIons()
-		print(len(TrajectoriesCoordinatesIon))
 		DestinationIons=[TrajectoriesCoordinatesIon[i][len(TrajectoriesCoordinatesIon[i])-1] for i in range(len(TrajectoriesCoordinatesIon))]
 		return DestinationIons
 	
@@ -77,22 +119,13 @@ class ParametersTrackParticles:
 
 	def getTrajectoriesCoordinatesDestinationElectrons(self):
 		TrajectoriesCoordinatesElectrons=self.getTrajectoriesCoordinatesElectrons()
-
 		DestinationElectrons=[TrajectoriesCoordinatesIon[i][len(TrajectoriesCoordinatesElectrons[i])-1] for i in range(len(TrajectoriesCoordinatesElectrons))]
 		return DestinationElectrons
 
 	def getTrajectoriesCoordinatesElectrons(self):
 		TrajectoriesCoordinatesElectrons=[self.trajectories.TrajectoriesCoordinates[i] for i in range(self.emitterPointer[0],self.emitterPointer[1])]
 		return TrajectoriesCoordinatesElectrons
-        #print(TrajectoriesCoordinates[0])
-  #       startPosition=[pos.position[0][i] for i in range(3)]
-  #       endPosition=[pos.position[NSTEP-1][i] for i in range(3)]
 
-		# self.X=[postionTrack[i][0] for i in range(len(postionTrack))]
-		# self.Y=[postionTrack[i][1] for i in range(len(postionTrack))]
-		# self.Z=[postionTrack[i][2] for i in range(len(postionTrack))]
-
-		# self.calculatePositionIons()
 
 
 	def setTrackInformationEmitter(self):
@@ -110,15 +143,6 @@ class ParametersTrackParticles:
 		self.emitterPointer=emitterPointer
 
 
-	# def calculatePositionIons(self):
-	# 	self.xPositionIons=self.XPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-	# 	self.yPositionIons=self.YPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-	# 	self.zPositionIons=self.ZPositionTracks[self.emitterInd[1]:self.emitterInd[2]]
-
-
-
-
-
 	def calculateMeanPathPrimaryParticles(self):
 		sumLenPathPrimaryParticles=0
 		nParticle=self.emitterPointer[1]
@@ -131,28 +155,63 @@ class ParametersTrackParticles:
 		self.meanPathPrimaryParticles=sumLenPathPrimaryParticles/nParticle
 		print(self.meanPathPrimaryParticles)
 
+		# TrajectoriesCoordinates=self.getTrajectoriesCoordinatesElectrons()
+		
+
+		# for ion in TrajectoriesCoordinates:
+
+		# 	for step in ion:
+
+
+
 
 
 
 	def calculateIonCollectionEfficency(self,x1,y1,z1,x2,y2,z2):
+		numberIon=len(self.getTrajectoriesCoordinatesIons())		
+		numberIonCollected=self.calculateIonCollection(x1,y1,z1,x2,y2,z2)
+		ionCollectionEfficency=numberIonCollected/numberIon	
+		return ionCollectionEfficency
 
-		rec=ShapeArea(x1,y1,z1,x2,y2,z2)
-		TrajectoriesCoordinatesDestinationIons=self.getTrajectoriesCoordinatesDestinationIons()
-		print(len(TrajectoriesCoordinatesDestinationIons))
-	 	xPositionIons=TrajectoriesCoordinatesDestinationIons[0]
-	 	yPositionIons=TrajectoriesCoordinatesDestinationIons[1]
-	 	zPositionIons=TrajectoriesCoordinatesDestinationIons[2]
+	def calculateIonCollection(self,x1,y1,z1,x2,y2,z2):
+		rec=Shape(x1,y1,z1,x2,y2,z2)
+		TrajectoriesCoordinates=self.getTrajectoriesCoordinatesDestinationIons()
 
-	 	sumIon=0
-	 	sumIonCollected=0
-	 	for step in range (self.emitterInd[2]-self.emitterInd[1]):
+		numberIonCollected=0
+	
+		i=0
+		for particle in TrajectoriesCoordinates:
+			print(particle)
+			if i >10 :
+				print(len(particle))
+			if (rec.xmin<=particle[0]<=rec.xmax)and(rec.ymin<=particle[1]<=rec.ymax)and(rec.zmin<=particle[3]<=rec.zmax):
+				numberIonCollected=numberIonCollected+1
+			i=i+1
+		return numberIonCollected
 
-	 	 	sumIon=sumIon+1
-	 	 	if (rec.xmin<=self.xPositionIons[step]<=rec.xmax)and(rec.ymin<=self.yPositionIons[step]<=rec.ymax)and(rec.zmin<=self.zPositionIons[step]<=rec.zmax):
-	 	 		sumIonCollected=sumIonCollected+1
-		
-	 	self.ionCollectionEfficency=sumIonCollected/sumIon	
-	 	print(self.ionCollectionEfficency)
+
+
+	def calculateIonVolumeEfficency(self,x1,y1,z1,x2,y2,z2):
+		numberIon=len(self.getTrajectoriesCoordinatesIons())
+		numberIonVolume=self.calculateIonVolume(x1,y1,z1,x2,y2,z2)
+		ionVolumeEfficency=numberIonVolume/numberIon
+		return ionVolumeEfficency
+
+	def calculateIonVolume(self,x1,y1,z1,x2,y2,z2):
+		rec=Shape(x1,y1,z1,x2,y2,z2)
+		TrajectoriesCoordinates=self.getTrajectoriesCoordinatesIons()
+		numberIonVolume=0
+
+		for ion in TrajectoriesCoordinates:
+
+			for step in ion:
+
+				if (rec.xmin<=step[0]<=rec.xmax)and(rec.ymin<=step[1]<=rec.ymax)and(rec.zmin<=step[2]<=rec.zmax):
+					numberIonVolume=numberIonVolume+1
+					break
+
+		return numberIonVolume
+
 
 
 
