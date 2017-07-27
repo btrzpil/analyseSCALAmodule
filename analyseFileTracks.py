@@ -18,8 +18,12 @@ modelGauge=Cylinder("cylinder",[0,0,-4.0,6.0,4.0])
 modelCollector=Cuboid("cuboid",[2.4,-1.0,-2.75,2.5,1.0,-1.55])
 modelReflaction=Cylinder("cylinder",[0,0,-0.1,0.1,0.3])
 filePath="E:\\btrzpil\\OperaSimulations\\shg\\sim\\pressure-h\\result"
+pressureData=[10**i for i in range(-13, 0, 1)]
+xData=pressureData
+xlabelText='Pressure [mbar]'
 meanPathPrimaryParticles=[]
 ionCollectionEfficency=[]
+ionReflactionEfficency=[]
 ionVolumeEfficency=[]
 for i in range(0,13):
 	fileName="\\helmer_database0_"+str(i+1) 
@@ -28,10 +32,32 @@ for i in range(0,13):
 	param=ParametersTrackParticles(tracks.trajectories)
 	MeanPathPrimaryParticles=param.calculateMeanPathPrimaryParticles()
 	meanPathPrimaryParticles.append(MeanPathPrimaryParticles)
-	IonCollectionEfficency=param.calculateIonCollectionEfficency(modelCollector)
-	ionCollectionEfficency.append(IonCollectionEfficency)
-	IonVolumeEfficency=param.calculateIonVolumeEfficency(modelCollector,modelReflaction)
-	ionVolumeEfficency.append(IonVolumeEfficency)
 
+	# IonCollectionEfficency=param.calculateIonCollectionEfficency(modelCollector)
+	# ionCollectionEfficency.append(IonCollectionEfficency)
 
+	# IonReflactionEfficency=param.calculateIonVolumeEfficency(modelReflaction,modelGauge)
+	# ionReflactionEfficency.append(IonReflactionEfficency)
 
+	# IonVolumeEfficency=param.calculateIonVolumeEfficency(modelCollector,modelReflaction)
+	# ionVolumeEfficency.append(IonVolumeEfficency)
+
+graphPath="E:\\btrzpil\\Result\\Graph\\Helmer\\Track"
+graphTitle="\\pressure_h_meanPathPrimaryParticles"
+graphMeanPath=Graphs(graphTitle,graphPath)
+graphMeanPath.plotMeanPathPrimaryParticles(xData,meanPathPrimaryParticles,xlabelText)
+
+# graphPath="E:\\btrzpil\\Result\\Graph\\Helmer\\Track"
+# graphTitle="\\pressure_h_ionCollectionEfficency"
+# graphMeanPath=Graphs(graphTitle,graphPath)
+# graphMeanPath.plotIonEfficency(xData,ionCollectionEfficency,xlabelText)
+
+# graphPath="E:\\btrzpil\\Result\\Graph\\Helmer\\Track"
+# graphTitle="\\pressure_h_ionReflactionEfficency"
+# graphMeanPath=Graphs(graphTitle,graphPath)
+# graphMeanPath.plotIonEfficency(xData,ionReflactionEfficency,xlabelText)
+
+# graphPath="E:\\btrzpil\\Result\\Graph\\Helmer\\Track"
+# graphTitle="\\pressure_h_ionVolumeEfficency"
+# graphMeanPath=Graphs(graphTitle,graphPath)
+# graphMeanPath.plotIonEfficency(xData,ionVolumeEfficency,xlabelText)

@@ -12,7 +12,7 @@ class Graphs:
     def __init__(self,graphTitle,graphPath):
         self.lineType=['r-*', 'b-*', 'k-*', 'g-*','y-*']
         self.graphTitle=graphTitle
-        self.graphTitle=graphTitle
+        self.graphPath=graphPath
 
     def setLabelLine(self,labelLine):
         self.labelLine=labelLine
@@ -39,7 +39,7 @@ class Graphs:
 
     def plotMeanPathPrimaryParticles(self,xData,meanPathPrimaryParticles,xlabelText):
 
-        ylabelText='Mean Path Primary Particles'
+        ylabelText='Mean Path Primary Particles [mm]'
         fig, ax = self.setFigure(xlabelText,ylabelText)
         labelLine=xlabelText
         self.plotLine(xData,meanPathPrimaryParticles,ax,self.lineType[0],labelLine)
@@ -48,12 +48,12 @@ class Graphs:
         self.saveFigure(fig)
 
 
-    def plotIonCollectionEfficency(self,xData,ionCollectionEfficency,xlabelText):
+    def plotIonEfficency(self,xData,ionEfficency,xlabelText):
 
-        ylabelText='Ion Collection Efficency'
+        ylabelText='Ion Efficency'
         fig, ax = self.setFigure(xlabelText,ylabelText)
         labelLine=xlabelText
-        self.plotLine(xData,ionCollectionEfficency,ax,self.lineType[0],labelLine)
+        self.plotLine(xData,ionEfficency,ax,self.lineType[0],labelLine)
         if xlabelText=='Pressure [mbar]':
             ax.set_xscale('log')
 

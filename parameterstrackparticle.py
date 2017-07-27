@@ -4,31 +4,7 @@ from filetracks import Position
 from volume import Volume
 from volume import Cylinder
 from volume import Cuboid
-
-class Shape:
-	def __init__(self,x1,y1,z1,x2,y2,z2):	
-		if x1>x2:
-			self.xmin=x2
-			self.xmax=x1
-		else:
-			self.xmin=x1
-			self.xmax=x2
-
-		if y1>y2:
-			self.ymin=y2
-			self.ymax=y1
-		else:
-			self.ymin=y1
-			self.ymax=y2
-
-		if z1>z2:
-			self.zmin=z2
-			self.zmax=z1
-		else:
-			self.zmin=z1
-			self.zmax=z2
-
-
+import math
 
 class ParametersTrackParticles:
 
@@ -103,17 +79,18 @@ class ParametersTrackParticles:
 
 
 	def calculateMeanPathPrimaryParticles(self):
-		sumLenPathPrimaryParticles=0
-		nParticle=self.emitterPointer[1]
-		NSTEP=self.getTrajectoriesParametersNSTEP()
-		StepLength=self.getTrajectoriesParametersStepLength()
-		for step in range (nParticle):
-			lenPathParticle=NSTEP[step]*StepLength[step]
-			sumLenPathPrimaryParticles=sumLenPathPrimaryParticles+lenPathParticle
+		TrajectoriesCoordinatesElectrons=self.getTrajectoriesCoordinatesElectrons()
+		sumLengthPathPrimaryParticles=0
+		for electron in TrajectoriesCoordinatesElectrons:
+			NSTEP=len(electron)
+			lengthPathElectron=0
+			for step in range(NSTEP-1):
+				lengthStep=math.sqrt((electron[step+1][0]-electron[step][0])**2+(electron[step+1][1]-electron[step][1])**2+(electron[step+1][2]-electron[step][2])**2)
+				lengthPathElectron=lengthPathElectron+lengthStep
+			sumLengthPathPrimaryParticles=sumLengthPathPrimaryParticles+lengthPathElectron
+		self.meanPathPrimaryParticles=(sumLengthPathPrimaryParticles*10)/len(TrajectoriesCoordinatesElectrons)	
 
-		self.meanPathPrimaryParticles=(sumLenPathPrimaryParticles/nParticle)*10
-		print(self.meanPathPrimaryParticles)
-		return self.meanPathPrimaryParticles
+		return lengthPathPrimaryParticles
 
 	def calculateIonCollectionEfficency(self,volume):
 		numberIon=len(self.getTrajectoriesCoordinatesIons())		
@@ -130,7 +107,7 @@ class ParametersTrackParticles:
 
 			if volume.checkPointVolume(particle[0],particle[1],particle[2]):
 				numberIonCollected=numberIonCollected+1
-		print(numberIonCollected)				
+				
 		return numberIonCollected
 
 
@@ -154,7 +131,7 @@ class ParametersTrackParticles:
 					numberIonVolume=numberIonVolume+1
 					break
 
-		print(numberIonVolume)
+
 		return numberIonVolume
 
 

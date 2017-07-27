@@ -7,17 +7,17 @@ from graphs import Graphs
 
 
 ######analyse file - pressure 
-##filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\res file\\research - pressure"
-##fileName="\\helmer_database"
-##numberFile=4
-##pressureData=[10**i for i in range(-13, 0, 1)]
-##sensitivityData=[]
-##for i in range(numberFile):
+filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\res file\\research - pressure"
+fileName="\\helmer_database"
+numberFile=4
+pressureData=[10**i for i in range(-13, 0, 1)]
+sensitivityData=[]
+for i in range(numberFile):
 ##
-##    res = FileRes(filePath,fileName+str(i))
-##    res.readFile()
-##    param=Parameters()
-##    param.setDataResFile(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
+	res = FileRes(filePath,fileName+str(i))
+	res.readFile()
+	param=Parameters()
+	param.setDataResFile(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
 ##    param.setPressure(pressureData)
 ##    param.calculateSensitivity()
 ##    sensitivityData.append(param.sensitivityData)

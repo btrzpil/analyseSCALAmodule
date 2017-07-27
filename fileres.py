@@ -1,3 +1,8 @@
+class SimulationData:
+
+    def __init__(self):
+        self.SimulationDataParameters=[]
+
 class FileRes:
    
     recognitionText = [" Primary Emitter ", " Secondary Emitter"]
