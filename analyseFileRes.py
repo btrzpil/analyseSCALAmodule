@@ -6,28 +6,52 @@ from graphs import Graphs
 
 
 
-######analyse file - pressure 
-filePath="E:\\btrzpil\\OperaSimulations\\simulation Helmer Gauge\\res file\\research - pressure"
-fileName="\\helmer_database"
-numberFile=4
-pressureData=[10**i for i in range(-13, 0, 1)]
+######analyse file - pressure - sensitivity
+filePath="E:\\btrzpil\\EMPIR\\Works\\OperaSimulation\\ExtractorBenchmarkSimulation\\N2"
+fileName="\\Benchmark_Extractor_pN2_i"
+numberFile=3
+pressureData=[10**i for i in range(-10, -1, 1)]
 sensitivityData=[]
-for i in range(numberFile):
-##
+
+for i in range(1,numberFile+1):
+
 	res = FileRes(filePath,fileName+str(i))
 	res.readFile()
 	param=Parameters()
 	param.setDataResFile(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
-##    param.setPressure(pressureData)
-##    param.calculateSensitivity()
-##    sensitivityData.append(param.sensitivityData)
-##
-##    
-##graphTitle="\\pressure"
-##graphPath="E:\\btrzpil\\Result\\Graph\\Helmer"
-##labelLine=["l","a","b","e","l"]
-##graphs=Graphs(graphTitle,graphPath)
-##graphs.plotSensitivity(sensitivityData,pressureData,'Pressure [mbar]',labelLine)
+	param.setPressure(pressureData)
+	param.calculateSensitivity()
+	sensitivityData.append(param.sensitivityData)
+	
+	param=Parameters()
+	param.setDataResFile(res.firstIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
+	param.setPressure(pressureData)
+	param.calculateSensitivity()
+	sensitivityData.append(param.sensitivityData)
+
+graphTitle=fileName
+graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation"
+labelLine=["last iteration, current1","first iteration, current1","last iteration, current2","first iteration, current2","last iteration, current3","first iteration, current3"]
+graphs=Graphs(graphTitle,graphPath)
+graphs.plotSensitivity(sensitivityData,pressureData,'Pressure [mbar]',labelLine)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

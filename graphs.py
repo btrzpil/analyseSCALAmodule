@@ -6,11 +6,18 @@ from scipy import interpolate
 
 
 class Graphs:
-
+#b : blue.
+#g : green.
+#r : red.
+#c : cyan.
+#m : magenta.
+#y : yellow.
+#k : black.
+#w : white.
 
 
     def __init__(self,graphTitle,graphPath):
-        self.lineType=['r-*', 'b-*', 'k-*', 'g-*','y-*']
+        self.lineType=['r-*', 'b-*', 'k-*', 'g-*','c-*','m-*']
         self.graphTitle=graphTitle
         self.graphPath=graphPath
 
@@ -26,7 +33,7 @@ class Graphs:
     
     def setLegend(self,fig, ax):                
         #plt.axis([0,maxPressureData, 0, maxSensitivityData+5])
-        legend = ax.legend(loc='upper left')
+        legend = ax.legend(loc='lower left')
         frame = legend.get_frame()
         frame.set_facecolor('1')      
         
