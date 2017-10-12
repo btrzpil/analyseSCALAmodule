@@ -10,10 +10,21 @@ from volume import Cylinder
 from volume import Cuboid
 import time
 
+from filetracks import FileTracks
+from parameterstrackparticle import ParametersTrackParticles
+import time
 
 
 
+filePath="E:\\btrzpil\\OperaSimulations\\shg\\sim\\deflector-h"
+for i in range(0,10):
+	fileName="\\model_helmer_database_"+str(i+1) 
+	tracks = FileTracks(filePath,fileName)
+	tracks.parseFile()
+	time.sleep(30)
 
+
+	
 modelGauge=Cylinder("cylinder",[0,0,-4.0,6.0,4.0])
 modelCollector=Cuboid("cuboid",[2.4,-1.0,-2.75,2.5,1.0,-1.55])
 modelReflaction=Cylinder("cylinder",[0,0,-0.1,0.1,0.3])

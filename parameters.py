@@ -39,7 +39,7 @@ class Parameters:
         for i in range(0, len(self.pressureData)):    
             sensitivity=abs(self.currentCollectorData[i]/(self.currentEmitterData[i]*self.pressureData[i]))
             self.sensitivityData.append(sensitivity)
-        print(self.sensitivityData)
+
 
         
     

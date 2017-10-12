@@ -6,6 +6,7 @@ class SimulationData:
 class FileRes:
    
     recognitionText = [" Primary Emitter ", " Secondary Emitter"]
+    recognitionTitle = ["    User title:"]
     lastIterationDataSimulation=[]
     firstIterationDataSimulation=[]
     nameEmitter=[]
@@ -16,12 +17,16 @@ class FileRes:
     def __init__(self, filePath,fileName):
         self.inFile=filePath+fileName+self.fileExtension
         
+    
 
-    def readFile(self):     
+    def readFile(self):
+        flg=False
+        valueTitle=[]     
         lastIterationDataSimulation=[]
         firstIterationDataSimulation=[]
         dataSimulation=[]
         nameEmitter=[]
+
         with open(self.inFile, "r") as file:
                 simulationCounter=1
                 simulationCounterTmp=simulationCounter
@@ -79,8 +84,18 @@ class FileRes:
                             nameEmitter.append(str(lineSpl[0].split(":")[1]))
 
 
+                    if flg:
+                        flg=False
+                        lineSpl = line.split(":")
+                        val_in=float(lineSpl[1])
+                        valueTitle.append(val_in)
 
-                            
+
+                    if line.startswith(self.recognitionTitle[0]):
+                        flg=True
+
+
+                          
 
 
 
@@ -103,7 +118,7 @@ class FileRes:
 
 
 
-
+        self.valueTitle=valueTitle           
         self.firstIterationDataSimulation=firstIterationDataSimulation
         self.lastIterationDataSimulation=lastIterationDataSimulation
         
