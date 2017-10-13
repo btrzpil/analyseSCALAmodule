@@ -77,20 +77,29 @@ class ParametersTrackParticles:
 		emitterPointer.append(counter)
 		self.emitterPointer=emitterPointer
 
+	def calculateStepLengthPrimaryParticles(self):
+		trackLengthData=0	
+		NSTEPdata=self.getTrajectoriesParametersNSTEP()
+		StepLengthData=self.getTrajectoriesParametersStepLength()
+		for i in range(self.emitterPointer[0],self.emitterPointer[1]):
+			trackLength=NSTEPdata[i]*StepLengthData[i]
+			trackLengthData=trackLengthData+trackLength
+		stepLengthNSTEP=trackLengthData/self.emitterPointer[1]
+		print(stepLengthNSTEP)
 
-	def calculateMeanPathPrimaryParticles(self):
+	def calculateMeanPathLengthPrimaryParticles(self):
 		TrajectoriesCoordinatesElectrons=self.getTrajectoriesCoordinatesElectrons()
-		sumLengthPathPrimaryParticles=0
+		sumPathLengthPrimaryParticles=0
 		for electron in TrajectoriesCoordinatesElectrons:
 			NSTEP=len(electron)
 			lengthPathElectron=0
 			for step in range(NSTEP-1):
 				lengthStep=math.sqrt((electron[step+1][0]-electron[step][0])**2+(electron[step+1][1]-electron[step][1])**2+(electron[step+1][2]-electron[step][2])**2)
 				lengthPathElectron=lengthPathElectron+lengthStep
-			sumLengthPathPrimaryParticles=sumLengthPathPrimaryParticles+lengthPathElectron
-		self.meanPathPrimaryParticles=(sumLengthPathPrimaryParticles*10)/len(TrajectoriesCoordinatesElectrons)	
+			sumPathLengthPrimaryParticles=sumPathLengthPrimaryParticles+lengthPathElectron
+		self.meanPathLength=(sumPathLengthPrimaryParticles*10)/len(TrajectoriesCoordinatesElectrons)	
 
-		return lengthPathPrimaryParticles
+		return self.meanPathLength
 
 	def calculateIonCollectionEfficency(self,volume):
 		numberIon=len(self.getTrajectoriesCoordinatesIons())		

@@ -52,6 +52,7 @@ for i in range(0,13):
 
 	# IonVolumeEfficency=param.calculateIonVolumeEfficency(modelCollector,modelReflaction)
 	# ionVolumeEfficency.append(IonVolumeEfficency)
+    def plotMeanPathPrimaryParticles(self,xData,meanPathPrimaryParticlesData,xAxLabel,lineLabel,legendTitle,graphPath):
 
 graphPath="E:\\btrzpil\\Result\\Graph\\Helmer\\Track"
 graphTitle="\\pressure_h_meanPathPrimaryParticles"

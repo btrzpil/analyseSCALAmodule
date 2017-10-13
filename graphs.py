@@ -63,9 +63,9 @@ class Graphs:
         self.setLegend(fig, ax,legendTitle)
         self.saveFigure(fig,graphPath)
 
-    def plotMeanPathPrimaryParticles(self,xData,meanPathPrimaryParticlesData,xAxLabel,lineLabel,legendTitle,graphPath):
-        yAxLabel='Mean Path Primary Particles [mm]'
-        self.plotGraph(xData, meanPathPrimaryParticles,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
+    def plotMeanPathLengthPrimaryParticles(self,xData,meanPathLengthPrimaryParticlesData,xAxLabel,lineLabel,legendTitle,graphPath):
+        yAxLabel='Mean Path Length Primary Particles [mm]'
+        self.plotGraph(xData, meanPathLengthPrimaryParticlesData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
 
         # ylabelText='Mean Path Primary Particles [mm]'
         # fig, ax = self.setFigure(xlabelText,ylabelText)
@@ -103,6 +103,10 @@ class Graphs:
     def plotSensitivity(self,xData,sensitivityData,xAxLabel,lineLabel,legendTitle,graphPath):
         yAxLabel='Sensitivity $[mbar^{-1}]$'
         self.plotGraph(xData, sensitivityData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
+
+    def plotYield(self,xData,yieldData,xAxLabel,lineLabel,legendTitle,graphPath):
+        yAxLabel='Yiled $[cm^{-1}]$'
+        self.plotGraph(xData, yieldData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
 
 
 

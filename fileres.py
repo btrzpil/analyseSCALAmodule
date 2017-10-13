@@ -120,6 +120,7 @@ class FileRes:
 
         self.valueTitle=valueTitle           
         self.firstIterationDataSimulation=firstIterationDataSimulation
+
         self.lastIterationDataSimulation=lastIterationDataSimulation
         
         self.numberEmitter=int(len(nameEmitter)/(simulationCounter-1))
