@@ -70,13 +70,13 @@ legendTitle="Emission current [mA]"
 xAxLabel='Pressure [mbar]'
 
 yData=meanPathLengthPrimaryParticlesData
-graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\track"
-graphs=Graphs(graphTitle+'coordinates')
+graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\track1"
+graphs=Graphs(graphTitle)
 graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
 yData=stepLengthNSTEPPrimaryParticlesData
-graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\track"
-graphs=Graphs(graphTitle+'NSTEP')
+graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\track2"
+graphs=Graphs(graphTitle)
 graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
 

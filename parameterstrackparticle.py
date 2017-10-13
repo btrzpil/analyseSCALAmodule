@@ -85,7 +85,7 @@ class ParametersTrackParticles:
 			trackLength=NSTEPdata[i]*StepLengthData[i]
 			trackLengthData=trackLengthData+trackLength
 		stepLengthNSTEP=trackLengthData/self.emitterPointer[1]
-		print(stepLengthNSTEP)
+		return stepLengthNSTEP
 
 	def calculateMeanPathLengthPrimaryParticles(self):
 		TrajectoriesCoordinatesElectrons=self.getTrajectoriesCoordinatesElectrons()
