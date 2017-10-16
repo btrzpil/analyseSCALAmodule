@@ -6,9 +6,9 @@ from graphs import Graphs
 from filedat import FileDat
 from filetracks import FileTracks
 from parameterstrackparticle import ParametersTrackParticles
-from volume import Volume
-from volume import Cylinder
-from volume import Cuboid
+from parameterstrackparticle import Volume
+from parameterstrackparticle import Cylinder
+from parameterstrackparticle import Cuboid
 import time
 #analyse ExtractorGauge Benchmark
 
@@ -23,43 +23,48 @@ import time
 #	time.sleep(30)
 
 
+
+
+
 filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
 fileName="\\Benchmark_Extractor_pH2_100eV_i"
 fileNameTrack="\\ex_pH2_100eV_i2_i"
 numberFile=3
 numberCase=16
-lineLabel=[]
 
-yieldData=[]
 lineLabel=[]
 pressureData=[]
-meanPathLengthPrimaryParticlesData=[]
-stepLengthNSTEPPrimaryParticlesData=[]
-meanPathLengthData=[]
+yieldData=[]
+
+meanPathLengthPrimaryParticlesData=[] #theory, calculation from res file
+stepLengthNSTEPData=[] #calculation from tracks file, NSTEP*stepLength
+meanPathLengthElectronsData=[] #calculation from tracks file, vector
 for i in range(1,numberFile+1):
 	res = FileRes(filePath,fileName+str(i))
 	res.readFile()
 	pressure=res.valueTitle
 	pressureData.append(pressure)
-	meanPathLengthPrimaryParticles=[]
-	stepLengthNSTEPPrimaryParticles=[]
+	stepLengthNSTEP=[]
+	meanPathLengthElectrons=[]
 	param=Parameters(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
 	param.calculateYield()
-	yieldData.append(param.yieldData)
+	yieldData.append(param.yieldCalculation)
 	param.calculateMeanPathLengthPrimaryParticles()
-	meanPathLengthData.append(param.meanPathLength)
+	meanPathLengthPrimaryParticlesData.append(param.meanPathLengthPrimaryParticles)
 
 	for j in range(1,numberCase+1):
 		fileNameTrack="\\ex_pH2_100eV_i"+str(i)+"_"+str(j)
 		tracks = FileTracks(filePath,fileNameTrack)
 		tracks.readFile()
 		param=ParametersTrackParticles(tracks.trajectories)
-		stepLengthNSTEP=param.calculateStepLengthPrimaryParticles()
-		stepLengthNSTEPPrimaryParticles.append(stepLengthNSTEP)
-		meanPathLength=param.calculateMeanPathLengthPrimaryParticles()
-		meanPathLengthPrimaryParticles.append(meanPathLength)
-	stepLengthNSTEPPrimaryParticlesData.append(stepLengthNSTEPPrimaryParticles)	
-	meanPathLengthPrimaryParticlesData.append(meanPathLengthPrimaryParticles)
+		param.calculateStepLengthNSTEP()
+		stepLengthNSTEP.append(param.stepLengthNSTEP)
+		param.calculateMeanPathLengthElectrons()
+		meanPathLengthElectrons.append(param.meanPathLengthElectrons)
+
+	stepLengthNSTEPData.append(stepLengthNSTEP)	
+	meanPathLengthElectronsData.append(meanPathLengthElectrons)
+
 	lineLabel.append(str(i))
 
 
@@ -69,34 +74,31 @@ graphTitle=fileName
 legendTitle="Emission current [mA]"
 xAxLabel='Pressure [mbar]'
 
-yData=meanPathLengthPrimaryParticlesData
-graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\track1"
-graphs=Graphs(graphTitle)
-graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
-
-yData=stepLengthNSTEPPrimaryParticlesData
-graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\track2"
-graphs=Graphs(graphTitle)
-graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
-
-
-yData=meanPathLengthData
-graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticles\\res"
-graphs=Graphs(graphTitle)
-graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
+#yData=meanPathLengthPrimaryParticlesData
+#graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticle\\res"
+#graphs=Graphs(graphTitle)
+#graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
 yData=yieldData
 graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\yield"
 graphs=Graphs(graphTitle)
 graphs.plotYield(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
+#yData=stepLengthNSTEPData
+#graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticle\\track_mean_step"
+#graphs=Graphs(graphTitle)
+#graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
+
+#yData=meanPathLengthElectronsData
+#graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticle\\track_vector"
+#graphs=Graphs(graphTitle)
+#graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
 
 
 
-
-# ######pressure - sensitivity
-# filePath="E:\\btrzpil\\EMPIR\\Works\\OperaSimulation\\ExtractorBenchmarkSimulation\\thread\\result"
+# # ######pressure - sensitivity
+# filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
 # fileName="\\Benchmark_Extractor_pH2_100eV_i"
 
 # numberFile=3
@@ -109,15 +111,16 @@ graphs.plotYield(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 # 	res.readFile()
 # 	pressure=res.valueTitle
 # 	pressureData.append(pressure)
-
+# 	pressureData.append(pressure)
 # 	param=Parameters(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
 # 	param.calculateSensitivity()
 # 	sensitivityData.append(param.sensitivityData)
 
 # 	lineLabel.append(str(i))
-# 	#param=Parameters(res.firstIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
-# 	#param.calculateSensitivity()
-# 	#sensitivityData.append(param.sensitivityData)
+# 	lineLabel.append(str(i))	
+# 	param=Parameters(res.firstIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
+# 	param.calculateSensitivity()
+# 	sensitivityData.append(param.sensitivityData)
 	
 
 # legendTitle="Emission current [mA]"
@@ -134,7 +137,7 @@ graphs.plotYield(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
 
 # #potential line
-# fileResPath="E:\\btrzpil\\EMPIR\\Works\\OperaSimulation\\ExtractorBenchmarkSimulation\\thread\\result"
+# fileResPath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
 # fileResName="\\Benchmark_Extractor_pH2_100eV_i1"
 # fileDatPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\data"
 # fileDatName="\\Benchmark_Extractor_pH2_100eV_i1_potential_line-10sim_"

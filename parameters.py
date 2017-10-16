@@ -18,8 +18,8 @@ class Parameters:
         self.numberSimulation=numberSimulation
         
         id=self.nameEmitter.index("ion_collec")
-        self.currentCollectorDataIn = [self.dataSimulation[i][id*2-1] for i in range(len(self.dataSimulation))]
-        self.currentCollectorDataOut = [self.dataSimulation[i][id*2] for i in range(len(self.dataSimulation))]
+        self.currentCollectorIn= [self.dataSimulation[i][id*2-1] for i in range(len(self.dataSimulation))]
+        self.currentCollectorOut = [self.dataSimulation[i][id*2] for i in range(len(self.dataSimulation))]
 
         
         id=self.nameEmitter.index("ionisation")
@@ -27,22 +27,24 @@ class Parameters:
         self.currentIonOut = [self.dataSimulation[i][id*2] for i in range(len(self.dataSimulation))]
 
         id=self.nameEmitter.index("thermionic output current ")
-        self.currentEmitterData = [self.dataSimulation[i][id] for i in range(len(self.dataSimulation))]
+        self.currentEmitter = [self.dataSimulation[i][id] for i in range(len(self.dataSimulation))]
 
 
     def calculateMeanPathLengthPrimaryParticles(self):
-        self.meanPathLength=[]
+        #theory
+        #"unit' [cm]
+        self.meanPathLengthPrimaryParticles=[]
         for i in range(0, len(self.currentIonIn)):    
-            pathLength=abs(self.currentIonIn[i]/self.currentEmitterData[i])
-            self.meanPathLength.append(pathLength)        
-        
+            pathLength=abs(self.currentIonIn[i]/self.currentEmitter[i])
+            self.meanPathLengthPrimaryParticles.append(pathLength)        
+
 
     def calculateYield(self):
-
-        self.yieldData=[]
+        #'unit' [1/cm]
+        self.yieldCalculation=[]
         for i in range(0, len(self.currentIonIn)):    
-            yieldValue=abs(self.currentIonIn[i]/self.currentIonOut[i])
-            self.yieldData.append(yieldValue)
+            yieldValue=abs(self.currentIonOut[i]/self.currentIonIn[i])
+            self.yieldCalculation.append(yieldValue)
         
 
         
@@ -51,7 +53,7 @@ class Parameters:
 
         self.sensitivityData=[]
         for i in range(0, len(self.pressureData)):    
-            sensitivity=abs(self.currentCollectorDataIn[i]/(self.currentEmitterData[i]*self.pressureData[i]))
+            sensitivity=abs(self.currentCollectorIn[i]/(self.currentEmitter[i]*self.pressureData[i]))
             self.sensitivityData.append(sensitivity)
 
 

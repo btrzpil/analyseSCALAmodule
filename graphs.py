@@ -38,7 +38,7 @@ class Graphs:
 
     def saveFigure(self,fig,graphPath):
         self.graphPath=graphPath
-        fig.savefig(self.graphPath+self.graphTitle+".png" ,dpi=600)# save the figure to file        
+        fig.savefig(self.graphPath+self.graphTitle+".png")# save the figure to file        
 
     def plotLine(self,xData,yData,ax,lineColor,lineLabel):
 
@@ -57,14 +57,25 @@ class Graphs:
             y=[yData[counterFile][i] for i in range(len(yData[counterFile]))]
             self.plotLine(x,y,ax,self.contrastingColors[counterFile],self.lineLabel[counterFile]) 
 
-        if xAxLabel=='Pressure [mbar]':
+        darrx=np.array(xData[0])
+        x_state=darrx.max()/darrx.min()
+
+        darry=np.array(yData[0])
+        y_state=darry.max()/darry.min()
+
+       # if xAxLabel=='Pressure [mbar]':
+        #    ax.set_xscale('log')
+        if x_state>100:
             ax.set_xscale('log')
+        if y_state>100:
+            ax.set_yscale('log')
 
         self.setLegend(fig, ax,legendTitle)
         self.saveFigure(fig,graphPath)
 
     def plotMeanPathLengthPrimaryParticles(self,xData,meanPathLengthPrimaryParticlesData,xAxLabel,lineLabel,legendTitle,graphPath):
-        yAxLabel='Mean Path Length Primary Particles [mm]'
+        yAxLabel='Mean Path Length Primary Particles [cm]'
+        #yAxLabel='Mean Path Length Primary Particles [mm]'        
         self.plotGraph(xData, meanPathLengthPrimaryParticlesData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
 
         # ylabelText='Mean Path Primary Particles [mm]'

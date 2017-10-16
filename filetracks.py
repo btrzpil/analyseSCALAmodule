@@ -59,7 +59,6 @@ class FileTracks:
             line = self.file.readline()
 
             if line == '':
-                print("file finished")
                 break
             else:
                 if line.startswith(self.recognitionText[0]):
