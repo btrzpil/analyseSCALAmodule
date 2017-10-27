@@ -1,134 +1,90 @@
+class SimulationSettings:
+
+    def __init__(self):
+
+        self.emitterLabel=[]
+        self.voltageLabel=[]
+        self.voltageValue=[]
+        self.pressure=[]
+        self.residualGas=[]
+#residual Gas - title 
+#pressure - title
+#emitter 
+
+#voltage
+
+
 class SimulationData:
 
     def __init__(self):
-        self.SimulationDataParameters=[]
+        self.firstIterationData=[]
+        self.lastIterationData=[]
 
-class FileRes:
-   
-    recognitionText = [" Primary Emitter ", " Secondary Emitter"]
-    recognitionTitle = ["    User title:"]
-    lastIterationDataSimulation=[]
-    firstIterationDataSimulation=[]
-    nameEmitter=[]
-    numberSimulation=0
-    numberEmitter=0
+class FileRes:     
     fileExtension=".res"
-    
+    recognitionVoltage=["      VOLTAGE"]
+    recognitionTitle=["    User title:"]
+    recognitionEmitter=[" Emitter:"]
+    recognitionEmitterData = [" Primary Emitter ", " Secondary Emitter"]
+
     def __init__(self, filePath,fileName):
         self.inFile=filePath+fileName+self.fileExtension
-        
-    
 
     def readFile(self):
-        flg=False
-        valueTitle=[]     
-        lastIterationDataSimulation=[]
-        firstIterationDataSimulation=[]
-        dataSimulation=[]
-        nameEmitter=[]
+
+
+
+
+        self.setSimulationSettings()
+
+        self.setSimulationData()
+
+
+
+
+    def setSimulationSettings(self):
+        simSettings=SimulationSettings()        
+        self.file = open(self.inFile,'r')
+            
+        while True:
+
+            line = self.file.readline()
+
+            if line == '':
+                break
+            else:
+                if line.startswith(self.recognitionTitle[0]):
+                    pressure=self.file.readline().split(":")[1]
+                    residualGas=self.file.readline().split(":")[1]
+                    simSettings.pressure.append(float(pressure))
+                    simSettings.residualGas.append(residualGas)
+
+
+                elif line.startswith(self.recognitionVoltage[0]):
+                    print(line)
+
+
+                elif line.startswith(self.recognitionEmitter[0]):
+                    emitter=line.split()[1]
+                    simSettings.emitterLabel.append(emitter)
+
+        self.file.close()
+
+
+    def setSimulationData(self):
+        simData=SimulationData()
+        iterationCounter=0
 
         with open(self.inFile, "r") as file:
-                simulationCounter=1
-                simulationCounterTmp=simulationCounter
-                iterationCounter=0
 
-                for line in file:
-        
-                    recognitionTextSimulationIndicator = [" Simulation " + str(simulationCounter)+" "]
-        
-                    if line.startswith(recognitionTextSimulationIndicator[0]):
-
-                        if (simulationCounterTmp==simulationCounter):
-
-                            simulationCounter=simulationCounter+1
-
-                        else:
-
-                            counterColDataFile = len(dataSimulation) // iterationCounter
-
-                            startLastIteration=len(dataSimulation)- counterColDataFile
-                            endLastIteration=len(dataSimulation)
-                            lastIterationDataSimulation.append(dataSimulation[startLastIteration:endLastIteration])
-
-                            startFirtIteration=0
-                            endLastIteration=counterColDataFile
-                            firstIterationDataSimulation.append(dataSimulation[startFirtIteration:endLastIteration])
-
-                            dataSimulation=[]
-                            simulationCounterTmp=simulationCounter
-                            iterationCounter=0
-
-
-
-                    if line.startswith(self.recognitionText[0]):
-                
-                        lineSpl = line.split("=")
-                        val = float(lineSpl[1])
-                        dataSimulation.append(val)
-                        iterationCounter=iterationCounter+1
-                        if (iterationCounter==1):
-
-                            nameEmitter.append((lineSpl[0].split(":"))[1])
-                        
-                
-                    elif line.startswith(self.recognitionText[1]):
-
-                        lineSpl = line.split(",")
-                        val_in=float(lineSpl[1].split("=")[1])
-                        val_out=float(lineSpl[2].split("=")[1])
-                        
-                        dataSimulation.append(val_in)
-                        dataSimulation.append(val_out)
-                        if (iterationCounter==1):
-
-                            nameEmitter.append(str(lineSpl[0].split(":")[1]))
-
-
-                    if flg:
-                        flg=False
-                        lineSpl = line.split(":")
-                        val_in=float(lineSpl[1])
-                        valueTitle.append(val_in)
-
-
-                    if line.startswith(self.recognitionTitle[0]):
-                        flg=True
-
-
-                          
-
-
-
-                            
-                if dataSimulation != []:
-
-                    counterColDataFile = len(dataSimulation)// iterationCounter
-                    
-                    startLastIteration=len(dataSimulation)- counterColDataFile
-                    endLastIteration=len(dataSimulation)
-                    
-                    lastIterationDataSimulation.append(dataSimulation[startLastIteration:endLastIteration])
-
-                    
-                    startFirtIteration=0
-                    endLastIteration=counterColDataFile
-                    
-                    firstIterationDataSimulation.append(dataSimulation[startFirtIteration:endLastIteration])
-
-
-
-
-        self.valueTitle=valueTitle           
-        self.firstIterationDataSimulation=firstIterationDataSimulation
-
-        self.lastIterationDataSimulation=lastIterationDataSimulation
-        
-        self.numberEmitter=int(len(nameEmitter)/(simulationCounter-1))
-
-        self.numberSimulation=simulationCounter-1
-        self.nameEmitter=nameEmitter[0:self.numberEmitter]
-
-        
-
-
-
+            for line in file:
+                if line.startswith(self.recognitionEmitterData[0]):
+                    lineSpl = line.split("=")
+                    val = float(lineSpl[1])
+                    print(val)
+                elif line.startswith(self.recognitionEmitterData[1]):
+                    lineSpl = line.split(",")
+                    val_in=float(lineSpl[1].split("=")[1])
+                    val_out=float(lineSpl[2].split("=")[1])
+                    print(val_in)
+                    print(val_out)
