@@ -71,7 +71,7 @@ class FileRes:
         self.file.close()
 
 
-    def setSimulationData(self):
+    def setSimulationData(self):    
         simData=SimulationData()
         iterationCounter=0
 
