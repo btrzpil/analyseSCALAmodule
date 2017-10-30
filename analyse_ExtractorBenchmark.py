@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from fileres import FileRes
+#from fileres import FileRes
 from parameters import Parameters
 from graphs import Graphs
 from filedat import FileDat
@@ -10,6 +10,11 @@ from parameterstrackparticle import Volume
 from parameterstrackparticle import Cylinder
 from parameterstrackparticle import Cuboid
 import time
+
+
+################################
+#################################
+from fileresMulti import FileRes 
 #analyse ExtractorGauge Benchmark
 
 
@@ -30,7 +35,7 @@ filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
 fileName="\\Benchmark_Extractor_pH2_100eV_i"
 fileNameTrack="\\ex_pH2_100eV_i2_i"
 numberFile=3
-numberCase=16
+numberCase=1
 
 lineLabel=[]
 pressureData=[]
