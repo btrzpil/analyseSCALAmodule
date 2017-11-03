@@ -15,37 +15,80 @@ class ParametersGauge:
 
 		self.setPressure()
 		self.setIonCollectorCurrent()
-		#self.setElectronEmitterCurrent(nameElectronEmitterCurrent)
-		#self.setElectronFaradayCupCurrent(nameElectronFaradayCupCurrent)
-		#self.setIonVacuumCurrentOut(nameIonVacuumCurrentOut)
-		#self.setIonVacuumCurrentIn(nameIonVacuumCurrentIn)
+		self.setElectronEmitterCurrent()
+		self.setElectronFaradayCupCurrent()
+		self.setIonVacuumCurrent()
+
 
 		
+	def getSecondaryEmitterCurrent(self,name):
+		print(name)
+		id=self.simulationSettings.secondaryEmitters.index(name)
+		inCurrent= self.simulationData.secondaryEmitterData[id*2]
+		outCurrent = self.simulationData.secondaryEmitterData[id*2+1]
+		print(inCurrent)
+		print(outCurrent)
+		return inCurrent,outCurrent
 
+	def getPrimaryEmitterCurrent(self,name):
+	
+		id=self.simulationSettings.primaryEmitters.index(name)
+		outCurrent = self.simulationData.primaryEmitterData[id]
+		print(outCurrent)
+		return outCurrent
 #set value
 
 	def setPressure(self):
 		self.pressure=self.simulationSettings.pressure
 
 	def setIonCollectorCurrent(self):
-		#IonCollectorCurrent=
 
+		if "IonCollector" in self.emitters:
+			nameIonCollectorCurrent=self.emitters["IonCollector"]
+			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameIonCollectorCurrent)
+			IonCollectorCurrent=inCurrent
+		else:
+			IonCollectorCurrent=0
 
-		id=self.simulationSettings.index(emitters('IonCollector'))
-		print(id)
+		
  
 
-	def setElectronEmitterCurrent(self,nameElectronEmitterCurrent):
-		self.electronEmitterCurrent=0
+	def setElectronEmitterCurrent(self):
+		if "ElectronEmitter" in self.emitters:
+			nameElectronEmitterCurrent=self.emitters["ElectronEmitter"]
 
-	def setElectronFaradayCupCurrent(self,nameElectronFaradayCupCurrent):
-		self.electronFaradayCupCurrent=0
 
-	def setIonVacuumCurrentOut(self,nameIonVacuumCurrentOut):
-		self.ionVacuumCurrentOut=0
 
-	def setIonVacuumCurrentIn(self,nameIonVacuumCurrentIn):
-		self.ionVacuumCurrentIn=1
+			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameElectronEmitterCurrent[1])
+			
+			outCurrent=self.getPrimaryEmitterCurrent(nameElectronEmitterCurrent[0])
+
+			ElectronEmitterCurrent=inCurrent-outCurrent
+			print(ElectronEmitterCurrent)
+
+		else:
+			ElectronEmitterCurrent=0
+
+
+	def setElectronFaradayCupCurrent(self):
+		if "ElectronFaradayCup" in self.emitters:
+			nameElectronFaradayCupCurrent=self.emitters["ElectronFaradayCup"]
+			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameElectronFaradayCupCurrent)
+			self.ElectronFaradayCupCurrent=inCurrent
+		else:
+			self.ElectronFaradayCupCurrent=0		
+
+
+
+	def setIonVacuumCurrent(self):
+		if "IonVacuumCurrent" in self.emitters:  
+			nameIonVacuumCurrent=self.emitters["IonVacuumCurrent"]
+			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameIonVacuumCurrent)
+			self.ionVacuumCurrentIn=inCurrent
+			self.ionVacuumCurrentOut=outCurrent
+		else:
+			self.ionVacuumCurrentIn=0
+			self.ionVacuumCurrentOut=0
 
 
 

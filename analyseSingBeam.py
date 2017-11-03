@@ -22,14 +22,6 @@ from graphs import Graphs
 
 import time
 
-filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\proposal2\\sBeam04res"
-fileName="\\c_0_1_2_1_0"
-
-res=FileRes(filePath,fileName)
-res.readFile()
-
-
-
 
 gauge=ModelGauge()
 
@@ -37,6 +29,14 @@ gauge.addEmitter(IonCollector('I_coll'))
 gauge.addEmitter(ElectronEmitter(['E_fil_prim','E_fil_back']))
 gauge.addEmitter(ElectronFaradayCup('E_cage_O'))
 
+filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\proposal2\\sBeam04res"
+fileName="\\c_0_1_2_1_0"
 
-param=ParametersGauge(gauge.emitters,gauge.boundaryConditions,res.simSettings, res.simData)
 
+
+
+for i in range(0,10):
+	res=FileRes(filePath,fileName)
+	res.readFile()
+	param=ParametersGauge(gauge.emitters,gauge.boundaryConditions,res.simSettings, res.simData)
+	param.
