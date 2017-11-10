@@ -1,7 +1,31 @@
 class BoundaryCondition:
-	def __init__(self,name, value):
+	#voltage condition
+	def __init__(self, nickname, name):
 		self.name=name
-		self.value=value
+		self.nickname=nickname
+
+class Collector(BoundaryCondition):
+	def __init__(self,nickname, name='Collector'):
+		BoundaryCondition.__init__(self,nickname, name)
+
+class Filament(BoundaryCondition):
+	def __init__(self,nickname, name='Filament'):
+		BoundaryCondition.__init__(self,nickname, name)
+
+class FaradayCup(BoundaryCondition):
+	def __init__(self,nickname, name='FaradayCup'):
+		BoundaryCondition.__init__(self,nickname, name)
+
+class FaradayCollector(BoundaryCondition):
+	def __init__(self,nickname, name='FaradayCollector'):
+		BoundaryCondition.__init__(self,nickname, name)
+
+class Wehnelt(BoundaryCondition):
+	def __init__(self,nickname, name='Wehnelt'):
+		BoundaryCondition.__init__(self,nickname, name)		
+
+
+
 
 
 class Emitter:
@@ -26,6 +50,8 @@ class IonVacuumCurrent(Emitter):
 		Emitter.__init__(self,name, eType)
 
 
+
+
 class ModelGauge:
 	def __init__(self):
 		self.boundaryConditions={}
@@ -36,7 +62,8 @@ class ModelGauge:
 
 	def addBoundaryCondition(self,BoundaryCondition):
 		#value  - BoundaryCondition - value , name
-		self.boundaryConditions.update({BoundaryCondition.name : BoundaryCondition.value})
+		self.boundaryConditions.update({BoundaryCondition.name : BoundaryCondition.nickname})
+		print(self.boundaryConditions)
 
 
 

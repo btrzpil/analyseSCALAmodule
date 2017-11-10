@@ -45,13 +45,20 @@ class FileRes:
                     self.simSettings.pressure=float(self.file.readline().split(":")[1])
                     self.simSettings.residualGas=self.file.readline().split(":")[1]
                 elif line.startswith(self.recognitionVoltage[0]):
-                    self.simSettings.voltageDrive.append(line)
+                    #info after header
+                    line=self.file.readline()
+                    line = self.file.readline()
+                    while len(line.strip()) != 0:
+
+                        self.simSettings.voltageValue.append(float(line.split()[0]))
+                        self.simSettings.voltageDrive.append(line.split()[-1])
+                        line = self.file.readline()
                 elif line.startswith(self.recognitionEmitter[0]):
                     e=line.split()[1]
                     self.simSettings.emitters.append(e)
                 elif line.startswith(self.recognitionIterationNumer[0]):
                     iterationCounter=iterationCounter+1
-
+        
         self.simSettings.emitterNumber=len(self.simSettings.emitters)
         self.simSettings.iterationNumber=int(iterationCounter/2)
 

@@ -18,9 +18,59 @@ class ParametersGauge:
 		self.setElectronEmitterCurrent()
 		self.setElectronFaradayCupCurrent()
 		self.setIonVacuumCurrent()
-
-
+		self.setCollectorCondition()
+		self.setFilamentCondition()
+		self.setFaradayCupCondition()
+		self.setFaradayCollectorCondition()
+		self.setWehneltCondition()
 		
+
+
+	def getBoundaryConditionValue(self,name):
+
+		id=self.simulationSettings.voltageDrive.index(name)
+		BoundaryConditionValue= self.simulationSettings.voltageValue[id]
+		return BoundaryConditionValue
+
+	def setCollectorCondition(self):
+		if "Collector" in self.boundaryConditions:
+			nameCollector=self.boundaryConditions["Collector"]
+			CollectorCondition=self.getBoundaryConditionValue(nameCollector)
+		else:
+			CollectorCondition=0
+		self.CollectorCondition=CollectorCondition
+
+
+	def setFilamentCondition(self):
+		if "Filament" in self.boundaryConditions:
+			FilamentCondition=self.getBoundaryConditionValue(self.boundaryConditions["Filament"])
+		else:
+			FilamentCondition=0
+		self.FilamentCondition=FilamentCondition
+
+	def setFaradayCupCondition(self):
+		if "FaradayCup" in self.boundaryConditions:
+			FaradayCupCondition=self.getBoundaryConditionValue(self.boundaryConditions["FaradayCup"])
+		else:
+			FaradayCupCondition=0
+		self.FaradayCupCondition=FaradayCupCondition
+
+	def setFaradayCollectorCondition(self):
+		if "FaradayCollector" in self.boundaryConditions:
+			FaradayCollectorCondition=self.getBoundaryConditionValue(self.boundaryConditions["FaradayCollector"])
+		else:
+			FaradayCollectorCondition=0
+		self.FaradayCollectorCondition=FaradayCollectorCondition
+
+	def setWehneltCondition(self):
+		if "Wehnelt" in self.boundaryConditions:
+			WehneltCondition=self.getBoundaryConditionValue(self.boundaryConditions["Wehnelt"])
+		else:
+			WehneltCondition=0
+		self.WehneltCondition=WehneltCondition
+
+
+
 	def getSecondaryEmitterCurrent(self,name):
 		print(name)
 		id=self.simulationSettings.secondaryEmitters.index(name)
@@ -42,13 +92,14 @@ class ParametersGauge:
 		self.pressure=self.simulationSettings.pressure
 
 	def setIonCollectorCurrent(self):
-
+		print(self.emitters)
 		if "IonCollector" in self.emitters:
 			nameIonCollectorCurrent=self.emitters["IonCollector"]
 			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameIonCollectorCurrent)
-			IonCollectorCurrent=inCurrent
+			ionCollectorCurrent=inCurrent
 		else:
-			IonCollectorCurrent=0
+			ionCollectorCurrent=0
+		self.ionCollectorCurrent=ionCollectorCurrent
 
 		
  
@@ -63,20 +114,21 @@ class ParametersGauge:
 			
 			outCurrent=self.getPrimaryEmitterCurrent(nameElectronEmitterCurrent[0])
 
-			ElectronEmitterCurrent=inCurrent-outCurrent
-			print(ElectronEmitterCurrent)
+			electronEmitterCurrent=inCurrent-outCurrent
+			print(electronEmitterCurrent)
 
 		else:
-			ElectronEmitterCurrent=0
-
+			electronEmitterCurrent=0
+		self.electronEmitterCurrent=electronEmitterCurrent
 
 	def setElectronFaradayCupCurrent(self):
 		if "ElectronFaradayCup" in self.emitters:
 			nameElectronFaradayCupCurrent=self.emitters["ElectronFaradayCup"]
 			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameElectronFaradayCupCurrent)
-			self.ElectronFaradayCupCurrent=inCurrent
+			electronFaradayCupCurrent=inCurrent
 		else:
-			self.ElectronFaradayCupCurrent=0		
+			electronFaradayCupCurrent=0	
+		self.electronFaradayCupCurrent=electronFaradayCupCurrent	
 
 
 
@@ -96,23 +148,28 @@ class ParametersGauge:
 	def calculateSensitivity(self):
 		#unit [1/mbar if pressure[mbar]]		
 		self.sensitivity=abs(self.ionCollectorCurrent/(self.electronEmitterCurrent*self.pressure))
+		return self.sensitivity
 
 	def calculateSensitivityBenchmark(self):
 		#unit [1/mbar if pressure[mbar]]		
-		sensitivityBenchmark=abs(self.ionCollectorCurrent/(self.electronFaradayCupCurrent*self.pressure))
-
+		self.sensitivityBenchmark=abs(self.ionCollectorCurrent/(self.electronFaradayCupCurrent*self.pressure))
+		return self.sensitivityBenchmark
 	def calculateYield(self):
 		#unit [1/cm]
 		self.yieldValue=self.ionVacuumCurrentOut/self.ionVacuumCurrentIn
-
+		return self.yieldValu
 	def calculateTheoryMeanPathLengthPrimaryParticles(self):
 		#unit [cm]
 		self.theoryMeanPathLengthPrimaryParticles=abs(self.ionVacuumCurrentIn/self.electronEmitterCurrent)
-
+		return self.theoryMeanPathLengthPrimaryParticles
 	def calculateIonCollectionEfficency(self):
 		#unit [%]
-		self.IonCollectionEfficency=abs(ionCollectorCurrent/ionVacuumCurrentOut)*100
+		self.ionCollectionEfficency=abs(self.ionCollectorCurrent/self.ionVacuumCurrentOut)*100
+		return self.ionCollectionEfficency
 
 	def calculateElectronTransmissionEfficency(self):
 		#unit [%]	
-		self.electronTransmissionEfficency=abs(electronFaradayCupCurrent/electronEmitterCurrent)*100
+		print(self.electronFaradayCupCurrent)
+		print(self.electronEmitterCurrent)
+		self.electronTransmissionEfficency=abs(self.electronFaradayCupCurrent/self.electronEmitterCurrent)*100
+		return self.electronTransmissionEfficency
