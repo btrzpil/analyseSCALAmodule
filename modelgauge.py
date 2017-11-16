@@ -61,9 +61,8 @@ class ModelGauge:
 		self.emitters.update({Emitter.eType : Emitter.name})
 
 	def addBoundaryCondition(self,BoundaryCondition):
-		#value  - BoundaryCondition - value , name
 		self.boundaryConditions.update({BoundaryCondition.name : BoundaryCondition.nickname})
-		print(self.boundaryConditions)
+
 
 
 

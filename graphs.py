@@ -14,9 +14,9 @@ class Graphs:
                         "#74d900", "#3df285", "#00c2f2", "#0080bf", "#3056bf", "#504d66", "#eabfff", "#322633", 
                         "#ff0044", "#d9a3aa"];
 
-    def __init__(self,graphTitle):
+    def __init__(self,graphName):
 
-        self.graphTitle=graphTitle
+        self.graphName=graphName
 
 
 
@@ -38,7 +38,7 @@ class Graphs:
 
     def saveFigure(self,fig,graphPath):
         self.graphPath=graphPath
-        fig.savefig(self.graphPath+self.graphTitle+".png")# save the figure to file        
+        fig.savefig(self.graphPath+self.graphName+".png")# save the figure to file        
 
     def plotLine(self,xData,yData,ax,lineColor,lineLabel):
 
@@ -50,66 +50,51 @@ class Graphs:
      
         fig, ax = self.setFigure(xAxLabel,yAxLabel)
         self.setLineLabel(lineLabel)
+
+
         numberFile=len(yData)
 
-        for counterFile in range(numberFile):
-            x=[xData[counterFile][i] for i in range(len(xData[counterFile]))]
-            y=[yData[counterFile][i] for i in range(len(yData[counterFile]))]
-            self.plotLine(x,y,ax,self.contrastingColors[counterFile],self.lineLabel[counterFile]) 
+        lenM = np.shape(xData)
+        if len(lenM) == 1:
+            x=xData
+            y=yData
+            self.plotLine(x,y,ax,self.contrastingColors[0],self.lineLabel) 
 
-        darrx=np.array(xData[0])
-        x_state=darrx.max()/darrx.min()
+        elif len(lenM) == 2:
+            numberFile=len(yData)
 
-        darry=np.array(yData[0])
-        y_state=darry.max()/darry.min()
+            for counterFile in range(numberFile):
+                x=[xData[counterFile][i] for i in range(len(xData[counterFile]))]
+                y=[yData[counterFile][i] for i in range(len(yData[counterFile]))]
+                self.plotLine(x,y,ax,self.contrastingColors[counterFile],self.lineLabel[counterFile]) 
+                self.setLegend(fig, ax,legendTitle)
+        darrx=np.array(x)
+        x_state=darrx.max()-darrx.min()
 
-       # if xAxLabel=='Pressure [mbar]':
-        #    ax.set_xscale('log')
+        darry=np.array(y)
+        y_state=darry.max()-darry.min()
+
         if x_state>100:
             ax.set_xscale('log')
         if y_state>100:
             ax.set_yscale('log')
-
-        self.setLegend(fig, ax,legendTitle)
+   
+        
         self.saveFigure(fig,graphPath)
 
     def plotMeanPathLengthPrimaryParticles(self,xData,meanPathLengthPrimaryParticlesData,xAxLabel,lineLabel,legendTitle,graphPath):
         yAxLabel='Mean Path Length Primary Particles [cm]'
-        #yAxLabel='Mean Path Length Primary Particles [mm]'        
         self.plotGraph(xData, meanPathLengthPrimaryParticlesData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
 
-        # ylabelText='Mean Path Primary Particles [mm]'
-        # fig, ax = self.setFigure(xlabelText,ylabelText)
-        # labelLine=xlabelText
-        # self.plotLine(xData,meanPathPrimaryParticles,ax,self.lineType[0],labelLine)
-        # if xlabelText=='Pressure [mbar]':
-        #     ax.set_xscale('log')
-        # self.saveFigure(fig)
-
-
     def plotIonEfficency(self,xData,ionEfficencyData,xAxLabel,lineLabel,legendTitle,graphPath):
-        yAxLabel='Ion Efficency'
+        yAxLabel='Ion Efficency $[\%]$'
         self.plotGraph(xData, ionEfficencyData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
-
-        # yAxLabel='Ion Efficency'
-        # fig, ax = self.setFigure(xAxLabel,yAxLabel)
-        # labelLine=xlabelText
-        # self.plotLine(xData,ionEfficency,ax,self.lineType[0],labelLine)
-        # if xAxLabel=='Pressure [mbar]':
-        #     ax.set_xscale('log')
-
-        # self.saveFigure(fig)
-
-
 
     def plotPotentialProfile(self,distanceData,potentialData,lineLabel,legendTitle,graphPath):
 
         xAxLabel='Distance [mm]'
         yAxLabel='Electric potential [V]'
         self.plotGraph(distanceData, potentialData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
-
-
-
 
     def plotSensitivity(self,xData,sensitivityData,xAxLabel,lineLabel,legendTitle,graphPath):
         yAxLabel='Sensitivity $[mbar^{-1}]$'
@@ -119,6 +104,9 @@ class Graphs:
         yAxLabel='Yiled $[cm^{-1}]$'
         self.plotGraph(xData, yieldData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
 
+    def plotTransmissionEfficency(self,xData,transEfficencyData,xAxLabel,lineLabel,legendTitle,graphPath):
+        yAxLabel='Electron Transmission Efficency $[\%]$'
+        self.plotGraph(xData, transEfficencyData,xAxLabel,yAxLabel,lineLabel,legendTitle,graphPath)
 
 
 

@@ -72,19 +72,15 @@ class ParametersGauge:
 
 
 	def getSecondaryEmitterCurrent(self,name):
-		print(name)
-		id=self.simulationSettings.secondaryEmitters.index(name)
+		id=self.simulationSettings.secondaryEmittersName.index(name)
 		inCurrent= self.simulationData.secondaryEmitterData[id*2]
 		outCurrent = self.simulationData.secondaryEmitterData[id*2+1]
-		print(inCurrent)
-		print(outCurrent)
 		return inCurrent,outCurrent
 
 	def getPrimaryEmitterCurrent(self,name):
 	
-		id=self.simulationSettings.primaryEmitters.index(name)
+		id=self.simulationSettings.primaryEmittersName.index(name)
 		outCurrent = self.simulationData.primaryEmitterData[id]
-		print(outCurrent)
 		return outCurrent
 #set value
 
@@ -92,7 +88,6 @@ class ParametersGauge:
 		self.pressure=self.simulationSettings.pressure
 
 	def setIonCollectorCurrent(self):
-		print(self.emitters)
 		if "IonCollector" in self.emitters:
 			nameIonCollectorCurrent=self.emitters["IonCollector"]
 			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameIonCollectorCurrent)
@@ -107,16 +102,9 @@ class ParametersGauge:
 	def setElectronEmitterCurrent(self):
 		if "ElectronEmitter" in self.emitters:
 			nameElectronEmitterCurrent=self.emitters["ElectronEmitter"]
-
-
-
-			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameElectronEmitterCurrent[1])
-			
+			[inCurrent,outCurrent]=self.getSecondaryEmitterCurrent(nameElectronEmitterCurrent[1])	
 			outCurrent=self.getPrimaryEmitterCurrent(nameElectronEmitterCurrent[0])
-
 			electronEmitterCurrent=inCurrent-outCurrent
-			print(electronEmitterCurrent)
-
 		else:
 			electronEmitterCurrent=0
 		self.electronEmitterCurrent=electronEmitterCurrent
@@ -156,8 +144,9 @@ class ParametersGauge:
 		return self.sensitivityBenchmark
 	def calculateYield(self):
 		#unit [1/cm]
-		self.yieldValue=self.ionVacuumCurrentOut/self.ionVacuumCurrentIn
-		return self.yieldValu
+		self.yieldValue=abs(self.ionVacuumCurrentOut/self.ionVacuumCurrentIn)
+		print(self.yieldValue)
+		return self.yieldValue
 	def calculateTheoryMeanPathLengthPrimaryParticles(self):
 		#unit [cm]
 		self.theoryMeanPathLengthPrimaryParticles=abs(self.ionVacuumCurrentIn/self.electronEmitterCurrent)
@@ -169,7 +158,5 @@ class ParametersGauge:
 
 	def calculateElectronTransmissionEfficency(self):
 		#unit [%]	
-		print(self.electronFaradayCupCurrent)
-		print(self.electronEmitterCurrent)
 		self.electronTransmissionEfficency=abs(self.electronFaradayCupCurrent/self.electronEmitterCurrent)*100
 		return self.electronTransmissionEfficency
