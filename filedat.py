@@ -23,8 +23,8 @@ class FileDat:
                 break
             else:
 
-                self.distanceData.append(line.split()[0])
-                self.potentialData.append(line.split()[3])
+                self.distanceData.append(float(line.split()[0]))
+                self.potentialData.append(float(line.split()[3]))
 
         self.file.close()
 

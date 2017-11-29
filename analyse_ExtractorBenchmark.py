@@ -1,175 +1,249 @@
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pltsimData
 import numpy as np
-#from fileres import FileRes
-from parameters import Parameters
-from graphs import Graphs
+
 from filedat import FileDat
+from fileres import FileRes
+
+
+
 from filetracks import FileTracks
+
 from parameterstrackparticle import ParametersTrackParticles
 from parameterstrackparticle import Volume
 from parameterstrackparticle import Cylinder
 from parameterstrackparticle import Cuboid
+
+from parametersgauge import ParametersGauge
+
+from modelgauge import BoundaryCondition, Emitter
+from modelgauge import ModelGauge
+from modelgauge import IonCollector, ElectronEmitter,ElectronFaradayCup,IonVacuumCurrent
+from modelgauge import Collector, Filament,FaradayCup,FaradayCollector,Wehnelt
+from graphs import Graphs
+
 import time
 
+#//////////////////////////////////////////////////////////////////////////////////
+#///////////////////mod1/////////////////////////////////////////////////////
+#//////////////////////////////////////////////////////////////////////////////////
+filePath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\MDS\\mod1\\result"
+graphPath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\analysisResult\\mod1\\graph"
+dataPath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\analysisResult\\mod1\\data"
+#//////////////////////////////////////////////////////////////////////////////////
+#///////////////////mod2/////////////////////////////////////////////////////
+#/////////////////////////////////////////////////////////////////////////////////
+# filePath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\MDS\\mod2\\result"
+# graphPath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\analysisResult\\mod2\\graph"
+# dataPath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\analysisResult\\mod2\\data"
+gauge=ModelGauge()
 
-################################
-#################################
-from fileresMulti import FileRes 
-#analyse ExtractorGauge Benchmark
-
-
-#parse file .track
-#filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
-#numberCase=16
-#for i in range(1,numberCase+1):
-#	fileName="\\ex_pH2_100eV_i3_"+str(i) 
-#	tracks = FileTracks(filePath,fileName)
-#	tracks.parseFile()
-#	time.sleep(30)
-
-
-
-
-
-filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
-fileName="\\Benchmark_Extractor_pH2_100eV_i"
-fileNameTrack="\\ex_pH2_100eV_i2_i"
-numberFile=3
-numberCase=1
-
-lineLabel=[]
-pressureData=[]
-yieldData=[]
-
-meanPathLengthPrimaryParticlesData=[] #theory, calculation from res file
-stepLengthNSTEPData=[] #calculation from tracks file, NSTEP*stepLength
-meanPathLengthElectronsData=[] #calculation from tracks file, vector
-for i in range(1,numberFile+1):
-	res = FileRes(filePath,fileName+str(i))
-	res.readFile()
-	pressure=res.valueTitle
-	pressureData.append(pressure)
-	stepLengthNSTEP=[]
-	meanPathLengthElectrons=[]
-	param=Parameters(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
-	param.calculateYield()
-	yieldData.append(param.yieldCalculation)
-	param.calculateMeanPathLengthPrimaryParticles()
-	meanPathLengthPrimaryParticlesData.append(param.meanPathLengthPrimaryParticles)
-
-	for j in range(1,numberCase+1):
-		fileNameTrack="\\ex_pH2_100eV_i"+str(i)+"_"+str(j)
-		tracks = FileTracks(filePath,fileNameTrack)
-		tracks.readFile()
-		param=ParametersTrackParticles(tracks.trajectories)
-		param.calculateStepLengthNSTEP()
-		stepLengthNSTEP.append(param.stepLengthNSTEP)
-		param.calculateMeanPathLengthElectrons()
-		meanPathLengthElectrons.append(param.meanPathLengthElectrons)
-
-	stepLengthNSTEPData.append(stepLengthNSTEP)	
-	meanPathLengthElectronsData.append(meanPathLengthElectrons)
-
-	lineLabel.append(str(i))
+gauge.addEmitter(IonCollector('I_coll'))
+gauge.addEmitter(ElectronEmitter(['E_fil_prim','E_fil_back']))
+gauge.addEmitter(IonVacuumCurrent('I_Vac'))
 
 
 
-xData=pressureData
-graphTitle=fileName
+
+
+
+
+baseFileName="\\c_"
+
+p_i=[]
+sen_i=[]
+eff_i=[]
+path_i=[]
+yield_i=[]
+x_i=[]
+label_i=[]
+
+
+for k in range(0,3):
+	p_j=[]
+	sen_j=[]
+	eff_j=[]
+	path_j=[]
+	yield_j=[]	
+	x_j=[]	
+	for i in range(0,9):
+
+		for j in range(1,5):
+
+			fileName=baseFileName+str(k)+"_"+str(i)+"_"+str(2*j-1)
+			print(fileName)
+			res=FileRes(filePath,fileName)
+			res.readFile()
+			param=ParametersGauge(gauge.emitters,gauge.boundaryConditions,res.simSettings, res.simData)
+		
+			p_j.append(param.pressure)
+			sen_j.append(param.calculateSensitivity())
+			eff_j.append(param.calculateIonCollectionEfficency())
+			path_j.append(param.calculateTheoryMeanPathLengthPrimaryParticles())
+			yield_j.append(param.calculateYield())
+			x_j.append(param.pressure)
+
+
+
+	label_i.append("%.2f" % round(param.electronEmitterCurrent*1000,2))
+
+	p_i.append(p_j)
+	sen_i.append(sen_j)
+	eff_i.append(eff_j)
+	path_i.append(path_j)
+	yield_i.append(yield_j)
+	x_i.append(x_j)
+
+
+
+xData=x_i
+
 legendTitle="Emission current [mA]"
 xAxLabel='Pressure [mbar]'
 
-#yData=meanPathLengthPrimaryParticlesData
-#graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticle\\res"
-#graphs=Graphs(graphTitle)
-#graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
+graphName=baseFileName
+graphs=Graphs(graphName+'sen')
+graphs.plotSensitivity(xData,sen_i,xAxLabel,label_i,legendTitle,graphPath)
 
-yData=yieldData
-graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\yield"
-graphs=Graphs(graphTitle)
-graphs.plotYield(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
+graphs=Graphs(graphName+'ioneff')
+graphs.plotIonEfficency(xData,eff_i,xAxLabel,label_i,legendTitle,graphPath)
 
-#yData=stepLengthNSTEPData
-#graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticle\\track_mean_step"
-#graphs=Graphs(graphTitle)
-#graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
+graphs=Graphs(graphName+'yield')
+graphs.plotYield(xData,yield_i,xAxLabel,label_i,legendTitle,graphPath)
 
-#yData=meanPathLengthElectronsData
-#graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\meanPathLengthPrimaryParticle\\track_vector"
-#graphs=Graphs(graphTitle)
-#graphs.plotMeanPathLengthPrimaryParticles(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
+graphs=Graphs(graphName+'path')
+graphs.plotMeanPathLengthPrimaryParticles(xData,path_i,xAxLabel,label_i,legendTitle,graphPath)
+# //pressure
 
 
+k=0
+for z in range (-10, 31, 10):
+	label_i=[]
+
+	distanceData=[]
+	potentialData=[]
+
+	for i in range(0,9):
+
+	#for j in range(1,5):
+		j=1
+		fileName=baseFileName+str(k)+"_"+str(i)+"_"+str(2*j-1)
+		print(fileName)
+		res=FileRes(filePath,fileName)
+		res.readFile()
+		param=ParametersGauge(gauge.emitters,gauge.boundaryConditions,res.simSettings, res.simData)
+
+		label_i.append(param.pressure)
+
+		fileDat = FileDat(dataPath,fileName+"_potential_line"+str(z))
+		fileDat.readFile()
+		distanceData.append(fileDat.distanceData)
+		potentialData.append(fileDat.potentialData)
+
+	graphName=baseFileName
+	legendTitle='Pressure [mbar]'
+	graphs=Graphs(baseFileName+'c_'+str(k)+'_p_potential_line'+str(z))
+	graphs.plotPotentialProfile(distanceData,potentialData,label_i,legendTitle,graphPath)
+	# //current
+for z in range (-10, 31, 10):
+	label_i=[]
+
+	distanceData=[]
+	potentialData=[]
+	for k in range(0,3):
+
+		#for j in range(1,5):
+		i=1
+		j=1
+
+		fileName=baseFileName+str(k)+"_"+str(i)+"_"+str(2*j-1)
+		res=FileRes(filePath,fileName)
+		res.readFile()
+		param=ParametersGauge(gauge.emitters,gauge.boundaryConditions,res.simSettings, res.simData)
+		label_i.append("%.2f" % round(param.electronEmitterCurrent*1000,2))
+
+		fileDat = FileDat(dataPath,fileName+"_potential_line"+str(z))
+		fileDat.readFile()
+		distanceData.append(fileDat.distanceData)
+		potentialData.append(fileDat.potentialData)
+
+	graphName=baseFileName
+	legendTitle="Emission current [mA]"
+	graphs=Graphs(baseFileName+"p_"+str(i)+"_"+str(2*j-1)+'_c_potential_line'+str(z))
+	graphs.plotPotentialProfile(distanceData,potentialData,label_i,legendTitle,graphPath)
 
 
-# # ######pressure - sensitivity
-# filePath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
-# fileName="\\Benchmark_Extractor_pH2_100eV_i"
 
-# numberFile=3
-# sensitivityData=[]
-# pressureData=[]
-# lineLabel=[]
-# for i in range(1,numberFile+1):
-	
-# 	res = FileRes(filePath,fileName+str(i))
-# 	res.readFile()
-# 	pressure=res.valueTitle
-# 	pressureData.append(pressure)
-# 	pressureData.append(pressure)
-# 	param=Parameters(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
-# 	param.calculateSensitivity()
-# 	sensitivityData.append(param.sensitivityData)
+# #//////////////////////////////////////////////////////////////////////////////////
+# #///////////////////mod3/////////////////////////////////////////////////////
+# #//////////////////////////////////////////////////////////////////////////////////
 
-# 	lineLabel.append(str(i))
-# 	lineLabel.append(str(i))	
-# 	param=Parameters(res.firstIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation,pressure)
-# 	param.calculateSensitivity()
-# 	sensitivityData.append(param.sensitivityData)
-	
+# gauge=ModelGauge()
+
+
+# gauge.addEmitter(IonCollector('I_coll'))
+# gauge.addEmitter(ElectronEmitter(['E_fil_prim','E_fil_back']))
+# gauge.addEmitter(IonVacuumCurrent('I_Vac'))
+
+
+
+
+# filePath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\MDS\\mod3\\result"
+
+# p_j=[]
+# sen_j=[]
+# eff_j=[]
+# # trans_i=[]
+# path_j=[]
+# yield_j=[]
+
+
+# x_j=[]
+# label_j=[]
+# baseFileName="\\c_1_"
+
+
+# for i in range(0,9):
+
+# 	for j in range(1,5):
+
+# 		fileName=baseFileName+str(i)+"_"+str(2*j-1)
+# 		res=FileRes(filePath,fileName)
+# 		res.readFile()
+# 		param=ParametersGauge(gauge.emitters,gauge.boundaryConditions,res.simSettings, res.simData)
+		
+# 		p_j.append(param.pressure)
+# 		sen_i.append(param.calculateSensitivity())
+# 		eff_i.append(param.calculateIonCollectionEfficency())
+# 		# trans_i.append(param.calculateElectronTransmissionEfficency())
+# 		path_i.append(param.calculateTheoryMeanPathLengthPrimaryParticles())
+# 		yield_i.append(param.calculateYield())
+# 		x_i.append(param.pressure)
+
+# label_i=param.electronEmitterCurrent*1000
+
+
+
+# graphPath="E:\\btrzpil\\OperaSimulations\\extractorGauge\\analysisResult\\mod3\\graph"
+# xData=x_i
 
 # legendTitle="Emission current [mA]"
 # xAxLabel='Pressure [mbar]'
-# graphTitle=fileName
-# graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\sensitivity"
-# graphs=Graphs(graphTitle)
-# graphs.plotSensitivity(pressureData,sensitivityData,xAxLabel,lineLabel,legendTitle,graphPath)
 
+# graphName=baseFileName
+# graphs=Graphs(graphName+'sen')
+# graphs.plotSensitivity(xData,sen_i,xAxLabel,label_i,legendTitle,graphPath)
 
+# graphs=Graphs(graphName+'ioneff')
+# graphs.plotIonEfficency(xData,eff_i,xAxLabel,label_i,legendTitle,graphPath)
 
+# graphs=Graphs(graphName+'yield')
+# graphs.plotYield(xData,yield_i,xAxLabel,label_i,legendTitle,graphPath)
 
+# graphs=Graphs(graphName+'path')
+# graphs.plotMeanPathLengthPrimaryParticles(xData,path_i,xAxLabel,label_i,legendTitle,graphPath)
 
-
-
-# #potential line
-# fileResPath="E:\\btrzpil\\EMPIR\\Works\\Sim\\extractor\\result"
-# fileResName="\\Benchmark_Extractor_pH2_100eV_i1"
-# fileDatPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\data"
-# fileDatName="\\Benchmark_Extractor_pH2_100eV_i1_potential_line-10sim_"
-# legendTitle="Pressure residual gas [mbar]"
-# graphTitle=fileDatName
-# graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation\\potentialProfile\\graph"
-
-# numberCase=16
-# graphs=Graphs(graphTitle)
-
-# res = FileRes(fileResPath,fileResName)
-# res.readFile()   
-# pressure=res.valueTitle
-# lineLabel = [str(p) for p in pressure]
-# distanceData=[]
-# potentialData=[]
-# for i in range(1,numberCase+1):
-
-#     fileDat = FileDat(fileDatPath,fileDatName+str(i))
-
-#     fileDat.readFile()
-
-#     distanceData.append(fileDat.distanceData)
-#     potentialData.append(fileDat.potentialData)
-
-
-# graphs.plotPotentialProfile(distanceData,potentialData,lineLabel,legendTitle,graphPath)
+# # graphs=Graphs(graphName+'transeff')
+# # graphs.plotTransmissionEfficency(xData,trans_i,xAxLabel,label_i,legendTitle,graphPath)
 
 
 
@@ -189,42 +263,8 @@ graphs.plotYield(xData,yData,xAxLabel,lineLabel,legendTitle,graphPath)
 
 
 
-# numberFile=1
-# pressureData=[1e-7 for i in range(6)]
-# pressureData.append([1e-7 for i in range(6)])
-
-# sensitivityData=[]
-
-# filePath='E:\\btrzpil\\EMPIR\\Works\\OperaSimulation\\ExtractorBenchmarkSimulation\\Benchmark_Extractor_test\\result\\multithreads\\mol03'
-# fileName="\\Benchmark_Extractor_test_manual"
 
 
 
-# res = FileRes(filePath,fileName)
-# res.readFile()
-# param=Parameters()
-# param.setDataResFile(res.lastIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
-# param.setPressure(pressureData)
-# param.calculateSensitivity()
-# sensitivityData.append(param.sensitivityData)
-	
-# param=Parameters()
-# param.setDataResFile(res.firstIterationDataSimulation,res.nameEmitter,res.numberEmitter,res.numberSimulation)
-# param.setPressure(pressureData)
-# param.calculateSensitivity()
-# sensitivityData.append(param.sensitivityData)
-
-# graphPath="E:\\btrzpil\\EMPIR\\Works\\Results\\BenchmarkSimulation"
-# legendTitle=""
-# xAxLabel='sim'
-# graphTitle=fileName
-
-# lineLabel=["last iteration","first iteration"]
-
-# graphs=Graphs(graphTitle)
-# xData=[1,2,3,4,5,6]
 
 
-
-# graphs=Graphs(graphTitle)
-# graphs.plotSensitivity(xData,sensitivityData,xAxLabel,lineLabel,legendTitle,graphPath)

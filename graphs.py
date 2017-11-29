@@ -69,14 +69,25 @@ class Graphs:
                 self.plotLine(x,y,ax,self.contrastingColors[counterFile],self.lineLabel[counterFile]) 
                 self.setLegend(fig, ax,legendTitle)
         darrx=np.array(x)
-        x_state=darrx.max()-darrx.min()
 
-        darry=np.array(y)
-        y_state=darry.max()-darry.min()
+        if darrx.min()==0:
+            x_state=darrx.max()-darrx.min()
+            print(darrx.max())
+            print(darrx.min())
+        else:
+            x_state=darrx.max()/darrx.min()
+
+        darry=np.array(y)   
+        if darry.min()==0:
+            y_state=darry.max()-darry.min()
+        else:
+            y_state=darry.max()/darry.min()           
+
+        
 
         if x_state>100:
             ax.set_xscale('log')
-        if y_state>100:
+        if y_state>500:
             ax.set_yscale('log')
    
         

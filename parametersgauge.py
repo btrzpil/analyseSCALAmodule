@@ -145,7 +145,6 @@ class ParametersGauge:
 	def calculateYield(self):
 		#unit [1/cm]
 		self.yieldValue=abs(self.ionVacuumCurrentOut/self.ionVacuumCurrentIn)
-		print(self.yieldValue)
 		return self.yieldValue
 	def calculateTheoryMeanPathLengthPrimaryParticles(self):
 		#unit [cm]

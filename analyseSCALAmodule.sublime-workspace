@@ -68,38 +68,37 @@
 	"buffers":
 	[
 		{
-			"file": "analyseSingBeam.py",
+			"file": "parametersgauge.py",
 			"settings":
 			{
-				"buffer_size": 8110,
+				"buffer_size": 5540,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "modelgauge.py",
+			"file": "analyse_ExtractorBenchmark.py",
 			"settings":
 			{
-				"buffer_size": 1706,
+				"buffer_size": 7043,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "fileres.py",
+			"file": "graphs.py",
 			"settings":
 			{
-				"buffer_size": 4605,
+				"buffer_size": 5604,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "test2.py",
+			"file": "filetracks.py",
 			"settings":
 			{
-				"buffer_size": 2540,
-				"encoding": "UTF-8",
+				"buffer_size": 3196,
 				"line_ending": "Windows"
 			}
 		}
@@ -140,9 +139,12 @@
 	],
 	"file_history":
 	[
+		"/C/Users/btrzpil/Git/analyseSCALAmodule/filedat.py",
+		"/C/Users/btrzpil/Git/analyseSCALAmodule/graphs.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/test.py",
-		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyse_HelmerGauge.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/fileres.py",
+		"/C/Users/btrzpil/Git/analyseSCALAmodule/modelgauge.py",
+		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyse_HelmerGauge.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/parametersMulti.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyse_ExtractorBenchmark.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyseSCALAmodule.sublime-project",
@@ -150,13 +152,11 @@
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/fileresMulti.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/parameterstrackparticle.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyseSingBeam.py",
-		"/C/Users/btrzpil/Git/analyseSCALAmodule/graphs.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/parametersGauge.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/resfile.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyse_ExtractorBenchamk_tmp.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/volume.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/filetracks.py",
-		"/C/Users/btrzpil/Git/analyseSCALAmodule/filedat.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/parameters.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/parseTrackFile.py",
 		"/C/Users/btrzpil/Git/analyseSCALAmodule/analyseFileRes.py",
@@ -168,7 +168,7 @@
 	],
 	"find":
 	{
-		"height": 74.0
+		"height": 49.0
 	},
 	"find_in_files":
 	{
@@ -182,6 +182,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"k",
 			"iterationNumber",
 			"primaryEmitters",
 			":\n",
@@ -209,19 +210,19 @@
 			[
 				{
 					"buffer": 0,
-					"file": "analyseSingBeam.py",
+					"file": "parametersgauge.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8110,
+						"buffer_size": 5540,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6724,
-								6724
+								1032,
+								1032
 							]
 						],
 						"settings":
@@ -230,7 +231,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 6834.0,
+						"translation.y": 840.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -238,19 +239,19 @@
 				},
 				{
 					"buffer": 1,
-					"file": "modelgauge.py",
+					"file": "analyse_ExtractorBenchmark.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1706,
+						"buffer_size": 7043,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1266,
-								1282
+								4707,
+								4707
 							]
 						],
 						"settings":
@@ -259,27 +260,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 672.0,
+						"translation.y": 6133.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "fileres.py",
+					"file": "graphs.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4605,
+						"buffer_size": 5604,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3819,
-								3819
+								3388,
+								3388
 							]
 						],
 						"settings":
@@ -289,39 +290,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 588.0,
+						"translation.y": 2604.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "test2.py",
-					"semi_transient": false,
+					"file": "filetracks.py",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 2540,
+						"buffer_size": 3196,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								688,
-								2540
+								239,
+								239
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2466.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
